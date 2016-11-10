@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "713551150328",
+    "firebase_url": "https://tuesquites.firebaseio.com",
+    "project_id": "tuesquites",
+    "storage_bucket": "tuesquites.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713551150328:android:30b608fa4b4cc1d6",
+        "android_client_info": {
+          "package_name": "leo.tusquites"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713551150328-sdim5j7onbm84581cs7hs7tic1d2elnu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "leo.tusquites",
+            "certificate_hash": "28862973C210265D2850F6CFC5DC5EE280A68466"
+          }
+        },
+        {
+          "client_id": "713551150328-g8kgq8tg5ispmluaps11memo4c1qdqr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfShEpHwL_HDLp4LOlna7krU2W40ovArw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713551150328-g8kgq8tg5ispmluaps11memo4c1qdqr2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Tus Squites</string>
+    <string name="text_btn_registro">Registrar</string>
+    <string name="email">Email</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="restaurar_pass">Restaurar Constraseña</string>
+    <string name="btn_login">Entrar</string>
+
+
+    <string name="hint_email">Correo</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="action_sign_in">Iniciar sesión</string>
+    <string name="action_sign_in_ime">Loguear</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="btn_regresar"><![CDATA[<< Regresar]]></string>
+    <string name="title_activity_insertar_productos">Insertar_productosActivity</string>
+</resources>
