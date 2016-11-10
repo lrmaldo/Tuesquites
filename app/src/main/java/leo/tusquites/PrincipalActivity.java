@@ -39,7 +39,7 @@ Button salir;
         floatingActionButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO something when floating action menu second item clicked
-                startActivity(new Intent(getApplication(),Insertar_productosActivity.class));
+                startActivity(new Intent(getApplication(),InsertarProductoActivity.class));
 
 
             }

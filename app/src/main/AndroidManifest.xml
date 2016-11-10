@@ -45,8 +45,8 @@
                 android:value=".DetalleUsuarioActivity" />
         </activity>
         <activity
-            android:name=".Insertar_productosActivity"
-            android:label="@string/title_activity_insertar_productos"
+            android:name=".InsertarProductoActivity"
+            android:label="@string/title_activity_insertar_producto"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

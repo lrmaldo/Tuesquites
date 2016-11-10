@@ -4,90 +4,82 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewDebug;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import leo.tusquites.modelos.modeloProducto;
 
 import static leo.tusquites.R.id.lista;
 
-
-public class Insertar_productosActivity extends AppCompatActivity {
-
+public class InsertarProductoActivity extends AppCompatActivity {
     EditText nombre_producto, precio;
-private Context context;
+    private Context context;
     ListView listView;
-     ArrayAdapter<modeloProducto> adapter;
+    ArrayAdapter<modeloProducto> adapter;
     private List<modeloProducto> listaProducto;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insertar_productos);
+        setContentView(R.layout.activity_insertar_producto);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
-        //btn_cant = (Button) findViewById(R.id.button3) ;
 
+        context =this;
 
-context =this;
-
- addView();
-
-      //  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        //fab.setOnClickListener(new View.OnClickListener() {
-            //@Override
-            //public void onClick(View view) {
-
-
-                //  listaProducto.add(get(nombre_producto.getText().toString(),precio.getText().toString()));
-                //adapter.notifyDataSetChanged();
-                //nombre_producto.getText().clear();
-                //precio.getText().clear();
-
-              //  Snackbar.make(view, "Se agrego un nuevo producto", Snackbar.LENGTH_LONG)
-                        //.setAction("Action", null).show();
-
-
-//            }
-//        });
-
+        addView();
 
 
     }
+
+
 
     private void addView() {
         nombre_producto = (EditText) findViewById(R.id.nombreProducto);
         precio = (EditText) findViewById(R.id.edi_precio);
         listView = (ListView) findViewById(lista);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(TextUtils.isEmpty(nombre_producto.getText())|| TextUtils.isEmpty(precio.getText())){
+                    Snackbar.make(view, "falta poner el producto o el precio", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }else {
+                    listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
+                    adapter.notifyDataSetChanged();
+                    nombre_producto.getText().clear();
+                    precio.getText().clear();
+
+                    Snackbar.make(view, "Se ha agregado un nuevo producto", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
 
 
 
 
 
-
-        adapter = new list_adapter(Insertar_productosActivity.this,getListaProductos());
-         listView.setAdapter(adapter);
+                adapter = new list_adapter(InsertarProductoActivity.this,getListaProductos());
+        listView.setAdapter(adapter);
     }
 
 
@@ -99,7 +91,7 @@ context =this;
         //descripciones= ctx.getResources().getStringArray(R.array.descripciones);
 
 
-            listaProducto.add(get(nombre,precio));
+        listaProducto.add(get(nombre,precio));
 
 
         //listaProducto.get(0).setSelected(true);
@@ -127,19 +119,19 @@ context =this;
 
         switch (id){
 
-          //  case R.id.menu_duplicar:
+            //  case R.id.menu_duplicar:
 
 //                for (int i=0; i<listaProducto.size(); i++){
 
 
 //                    if(listaProducto.get(i).isSelected()){
-  //                      listaProducto.add(get(listaProducto.get(i).getTitulo(), listaProducto.get(i).getDescripcion(), listaProducto.get(i).getId_imagen()));
-    //                    listaProducto.get(i).setSelected(false);
-      //              }
+            //                      listaProducto.add(get(listaProducto.get(i).getTitulo(), listaProducto.get(i).getDescripcion(), listaProducto.get(i).getId_imagen()));
+            //                    listaProducto.get(i).setSelected(false);
+            //              }
 
-        //        }
+            //        }
 
-          //      adapter.notifyDataSetChanged();
+            //      adapter.notifyDataSetChanged();
 
             //    break;
 
@@ -196,4 +188,3 @@ context =this;
     }
 
 }
-
