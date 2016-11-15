@@ -9,4 +9,9 @@
         android:icon="@android:drawable/ic_menu_delete"
         app:showAsAction="always"
         />
+    <item android:id="@+id/menu_ocultar"
+        android:orderInCategory="200"
+       android:icon="@drawable/ic_archive_white_24dp"
+        app:showAsAction="always"
+        ></item>
 </menu>

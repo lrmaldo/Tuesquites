@@ -58,6 +58,10 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
             viewHolder.cantidad = (NumberPicker) view.findViewById(R.id.numberPicker);
             viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox);
 
+            viewHolder.cantidad.setMinValue(0);
+            viewHolder.cantidad.setMaxValue(100);
+            viewHolder.cantidad.setWrapSelectorWheel(false);
+
             viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override                    //checkbox ,                activado:true-false
