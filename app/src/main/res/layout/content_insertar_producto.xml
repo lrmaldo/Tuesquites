@@ -37,10 +37,19 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:inputType="number|numberDecimal" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Cantidad inicio"
+        android:id="@+id/edi_cantidad"
+        android:layout_below="@+id/edi_precio"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:inputType="number|numberDecimal" />
 
 
     <View
-        android:layout_below="@+id/edi_precio"
+        android:layout_below="@+id/edi_cantidad"
         android:layout_height="2dip"
         android:background="#FF909090"
         android:layout_width="wrap_content" />
@@ -51,8 +60,17 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/lista"
-        android:layout_below="@+id/edi_precio"
+        android:layout_below="@+id/edi_cantidad"
         android:animationCache="true" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/lista_final2"
+        android:layout_below="@+id/edi_cantidad"
+        android:animationCache="true"
+        android:visibility="gone"/>
 
     <TextView
         android:text="Lista  de productos"
@@ -72,4 +90,23 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:layout_below="@id/lista"
+        android:background="@color/colorPrimary"
+        android:id="@+id/guardarlista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/button_padding"
+        android:paddingTop="@dimen/button_padding"
+        android:text="Guardar  productos inicio"
+        android:textColor="@android:color/white"
+        android:visibility="visible"/>
+
+
+
+
 </RelativeLayout>
+
+

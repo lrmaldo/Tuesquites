@@ -59,7 +59,7 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
             viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox);
 
             viewHolder.cantidad.setMinValue(0);
-            viewHolder.cantidad.setMaxValue(100);
+            viewHolder.cantidad.setMaxValue(200);
             viewHolder.cantidad.setWrapSelectorWheel(false);
 
             viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -82,7 +82,9 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
         }
         ViewHolder holder = (ViewHolder) view.getTag();
 
-        holder.nombre.setText(list.get(position).getNombre()+" $"+list.get(position).getPrecio());
+        holder.nombre.setText(list.get(position).getNombre());
+        holder.checkbox.setText("$"+list.get(position).getPrecio());
+        holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidad()));
         holder.checkbox.setChecked(list.get(position).getSelected());
         return view;
     }

@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <ListView
+        android:id="@+id/lista_final"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <View
+        android:layout_below="@+id/lista_final"
+        android:layout_height="2dip"
+        android:background="#FF909090"
+        android:layout_width="wrap_content" />
+    <Button
+        android:layout_below="@id/lista"
+        android:background="@color/colorPrimary"
+        android:id="@+id/guardarDatos_boton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/button_padding"
+        android:paddingTop="@dimen/button_padding"
+        android:text="Guardar"
+        android:textColor="@android:color/white"
+        android:visibility="visible"/>
+
+
+
+</RelativeLayout>

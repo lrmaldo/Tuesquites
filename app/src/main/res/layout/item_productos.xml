@@ -8,14 +8,15 @@
 
 
     <CheckBox
-        android:text=""
+        android:text="precio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkBox" />
+        android:id="@+id/checkBox"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
         android:id="@+id/NombreCa_precio"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -23,7 +24,6 @@
         android:paddingLeft="6dip"
         android:text="text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
 
 
     <NumberPicker
@@ -46,4 +46,6 @@
         android:text="candidad"
         android:textSize="@dimen/activity_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
 </RelativeLayout>

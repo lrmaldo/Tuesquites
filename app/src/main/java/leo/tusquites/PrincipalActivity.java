@@ -32,7 +32,7 @@ Button salir;
         floatingActionButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(getApplication(), RegistroActivity.class));
-                finish();
+                //finish();
 
             }
         });
@@ -48,7 +48,7 @@ Button salir;
             public void onClick(View v) {
                 //TODO something when floating action menu third item clicked
                 startActivity(new Intent(getApplication(), VistaUsuariosActivity.class));
-                finish();
+                //finish();
             }
         });
 

@@ -2,6 +2,7 @@ package leo.tusquites;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
@@ -25,17 +28,24 @@ import java.util.List;
 import leo.tusquites.modelos.SQLiteHelper;
 import leo.tusquites.modelos.modeloProducto;
 
+import static leo.tusquites.R.id.edi_cantidad;
 import static leo.tusquites.R.id.lista;
 import static leo.tusquites.R.id.nombreProducto;
 
 public class InsertarProductoActivity extends AppCompatActivity {
-    EditText nombre_producto, precio;
+    EditText nombre_producto, precio,edi_cantidad;
     private Context context;
-    ListView listView;
+    ListView listView, listView_final;
+    TextView titulo;
+    Button guardarlist;
     ArrayList<modeloProducto> pro = new ArrayList<>();
-    ArrayAdapter<modeloProducto> adapter;
+
+    ArrayList<modeloProducto> pro_final = new ArrayList<>();
+    ArrayAdapter<modeloProducto> adapter,ad_final;
+
     private List<modeloProducto> listaProducto;
     boolean vista = true;
+
 
 
 
@@ -53,20 +63,33 @@ public class InsertarProductoActivity extends AppCompatActivity {
 
         context =this;
 
+
         addView();
 
         re_cursor();
 
 
-    }
+
+
+
+
+
+        }
+
+
+
 
 
 
     private void addView() {
+        guardarlist = (Button) findViewById(R.id.guardarlista);
         nombre_producto = (EditText) findViewById(R.id.nombreProducto);
         precio = (EditText) findViewById(R.id.edi_precio);
-        listView = (ListView) findViewById(lista);
+        edi_cantidad = (EditText) findViewById(R.id.edi_cantidad);
 
+        listView = (ListView) findViewById(lista);
+        listView_final= (ListView)  findViewById(R.id.lista_final2);
+titulo = (TextView) findViewById(R.id.textView);
         //listView.setVisibility(View.INVISIBLE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -86,11 +109,12 @@ public class InsertarProductoActivity extends AppCompatActivity {
                     //listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
                    registro.put("nombre",nombre_producto.getText().toString());
                     registro.put("precio",precio.getText().toString());
-                    registro.put("cantidad","0");
+                    registro.put("cantidad",edi_cantidad.getText().toString());
 
                     bd.insert("productos", null, registro);
                     bd.close();
                     adapter.notifyDataSetChanged();
+                    ad_final.notifyDataSetChanged();
                     nombre_producto.getText().clear();
                     precio.getText().clear();
                     re_cursor();
@@ -103,9 +127,12 @@ public class InsertarProductoActivity extends AppCompatActivity {
 
 
 
-
+                ad_final=new list_adapter(InsertarProductoActivity.this,pro_final);
                 adapter = new list_adapter(InsertarProductoActivity.this,pro);
+        listView_final.setAdapter(ad_final);
         listView.setAdapter(adapter);
+
+
 
     }
 
@@ -170,10 +197,12 @@ public class InsertarProductoActivity extends AppCompatActivity {
                         final SQLiteDatabase db = admin.getReadableDatabase();
                         db.delete("productos","nombre = '"+pro.get(i).getNombre()+"'",null);
                         pro.remove(i);
+                        pro_final.remove(i);
                         //listaProducto.remove(i);
 
                     }
                 }
+                ad_final.notifyDataSetChanged();
                 adapter.notifyDataSetChanged();
 
 
@@ -184,9 +213,21 @@ public class InsertarProductoActivity extends AppCompatActivity {
             case  R.id.menu_ocultar:
             {
              if(vista){
+                 titulo.setText("Ahora pon los productos que te quedaron");
+
+                 listView_final.setVisibility(View.VISIBLE);
+
                  listView.setVisibility(View.INVISIBLE);
+                 nombre_producto.setVisibility(View.GONE);
+                 precio.setVisibility(View.GONE);
+                 edi_cantidad.setVisibility(View.GONE);
                  vista=false;
              }else {
+                 nombre_producto.setVisibility(View.VISIBLE);
+                 precio.setVisibility(View.VISIBLE);
+                 edi_cantidad.setVisibility(View.VISIBLE);
+                 titulo.setText("Lista  de productos");
+                 listView_final.setVisibility(View.INVISIBLE);
                  listView.setVisibility(View.VISIBLE);
                  vista=true;
              }
@@ -217,9 +258,13 @@ public class InsertarProductoActivity extends AppCompatActivity {
 
             modeloProducto d = new modeloProducto(nombre,precio
             ,cantidad);
+            modeloProducto d1 = new modeloProducto(nombre,precio,"0");
             pro.add(d);
+            pro_final.add(d1);
+
         }
         if(!(pro.size()<1)){
+            listView_final.setAdapter(ad_final);
             listView.setAdapter(adapter);
         }
         db.close();
@@ -232,6 +277,7 @@ public class InsertarProductoActivity extends AppCompatActivity {
 
 
     public void onClick(View v) {
+
         ArrayList<String> QrEtOccurence = new ArrayList<String>();
         TextView tvNomDuQr;
         NumberPicker npNbJours;
@@ -252,5 +298,9 @@ public class InsertarProductoActivity extends AppCompatActivity {
         //   outputStrArr[i] = QrEtOccurence.get(i);}
 
     }
+
+
+
+
 
 }

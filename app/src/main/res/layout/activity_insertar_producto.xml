@@ -22,7 +22,10 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_insertar_producto" />
+    <include layout="@layout/content_insertar_producto"
+        android:id="@+id/contes"/>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
