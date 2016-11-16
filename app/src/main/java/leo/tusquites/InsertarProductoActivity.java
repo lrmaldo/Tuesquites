@@ -1,19 +1,24 @@
 package leo.tusquites;
 
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +45,7 @@ public class InsertarProductoActivity extends AppCompatActivity {
     TextView titulo;
     Button guardarlist;
     ArrayList<modeloProducto> pro = new ArrayList<>();
+    Dialog customDialog = null;
 
     ArrayList<modeloProducto> pro_final = new ArrayList<>();
     ArrayAdapter<modeloProducto> adapter,ad_final;
@@ -131,7 +138,7 @@ titulo = (TextView) findViewById(R.id.textView);
                 adapter = new list_adapter(InsertarProductoActivity.this,pro);
         listView_final.setAdapter(ad_final);
         listView.setAdapter(adapter);
-
+      //listView_final;
 
 
     }
@@ -173,7 +180,53 @@ titulo = (TextView) findViewById(R.id.textView);
 
         switch (id){
 
-            //  case R.id.menu_duplicar:
+             case R.id.menu_agregar:
+                 customDialog = new Dialog(this,R.style.Theme_Dialog_Translucent);
+                 //deshabilitamos el título por defecto
+                 customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                 //obligamos al usuario a pulsar los botones para cerrarlo
+                 //customDialog.setCancelable(false);
+                 //establecemos el contenido de nuestro dialog
+                 customDialog.setContentView(R.layout.dialog_insertar);
+
+                // TextView titulo = (TextView) customDialog.findViewById(R.id.titulo);
+                 //titulo.setText("Título del Dialog");
+
+//                 TextView contenido = (TextView) customDialog.findViewById(R.id.contenido);
+  //               contenido.setText("Mensaje con el contenido del dialog");
+                    Button es = (Button) customDialog.findViewById(R.id.entrar_boton);
+                 es.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         ArrayList<String> cadena = new ArrayList<String>();
+                         NumberPicker npNbJours;
+
+                         for (int i = 0; i < listView_final.getCount(); i++) {
+                             v = listView_final.getChildAt(i);
+                             // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa);
+                             npNbJours = (NumberPicker) v.findViewById(R.id.numberPicker);
+                             // String NomDuQr=tvNomDuQr.getText().toString();
+                             int NbJours = npNbJours.getValue();
+                             //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
+                             String tex = "cantidad de " + NbJours;
+                             cadena.add(tex);
+                             //QrEtOccurence.add(output);}
+                         }
+                         String[] outputStrArr = new String[cadena.size()];
+                         for (int i = 0; i < cadena.size(); i++) {
+                             outputStrArr[i] = cadena.get(i);
+                             Log.e("Salida",outputStrArr[i]);
+                         }
+
+
+                    customDialog.dismiss();
+                     }
+                 });
+
+customDialog.show();
+
+
+
 
 //                for (int i=0; i<listaProducto.size(); i++){
 
@@ -187,7 +240,7 @@ titulo = (TextView) findViewById(R.id.textView);
 
             //      adapter.notifyDataSetChanged();
 
-            //    break;
+              break;
 
             case R.id.menu_borrar:
 

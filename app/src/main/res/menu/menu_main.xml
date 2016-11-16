@@ -2,7 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
+<item
+android:icon="@drawable/ic_action_add"
+    android:orderInCategory="300"
+    android:id="@+id/menu_agregar"
+    app:showAsAction="always"
+    android:title=""
+    />
     <item android:title="Item"
         android:id="@+id/menu_borrar"
         android:orderInCategory="100"
@@ -13,5 +19,5 @@
         android:orderInCategory="200"
        android:icon="@drawable/ic_archive_white_24dp"
         app:showAsAction="always"
-        ></item>
+        android:title=""></item>
 </menu>

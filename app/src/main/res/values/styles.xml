@@ -33,4 +33,8 @@
 
     <color name="grey200">#EEEEEE</color>
 
+    <style name="Theme_Dialog_Translucent" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

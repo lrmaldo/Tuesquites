@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="@dimen/dialog_body"
+
+    >
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+
+            >
+
+            <TextView
+                android:id="@+id/info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="25dp"
+                android:paddingBottom="@dimen/padding_between"
+                android:paddingTop="@dimen/padding_between"
+                android:text="Escribe aquí el producto extra"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/info_text"
+                android:layout_marginBottom="@dimen/padding_between"
+                android:layout_marginTop="@dimen/padding_between"
+                android:background="#C8C9CB" />
+
+
+
+            <EditText
+                android:id="@+id/nombre_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:background="@drawable/edit_text_border"
+                android:ems="10"
+                android:hint="Nombre"
+                android:inputType="text"
+                android:textColor="@color/colorPrimary"
+                android:padding="@dimen/edit_text_padding"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/cantidad_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nombre_input"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/padding_between"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:background="@drawable/edit_text_border"
+                android:ems="10"
+                android:hint="Cantidad"
+                android:inputType="number"
+                android:padding="@dimen/edit_text_padding"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/Precio_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cantidad_dialog"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/padding_between"
+                android:layout_marginTop="@dimen/normal_padding"
+                android:background="@drawable/edit_text_border"
+                android:ems="10"
+                android:hint="Precio"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/edit_text_padding"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+           >
+
+
+
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+
+        android:id="@+id/entrar_boton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/button_padding"
+        android:paddingTop="@dimen/button_padding"
+
+        android:text="Guardar"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white" />
+</RelativeLayout>
