@@ -20,4 +20,11 @@ android:icon="@drawable/ic_action_add"
        android:icon="@drawable/ic_archive_white_24dp"
         app:showAsAction="always"
         android:title=""></item>
+    <item
+        android:icon="@drawable/ic_create_white_24dp"
+        android:id="@+id/menu_editar"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:title=""
+        />
 </menu>

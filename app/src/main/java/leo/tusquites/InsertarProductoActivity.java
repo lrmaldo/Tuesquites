@@ -3,6 +3,7 @@ package leo.tusquites;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -141,29 +142,13 @@ titulo = (TextView) findViewById(R.id.textView);
       //listView_final;
 
 
-    }
 
 
-    private List<modeloProducto> getListaProductos(){
-        listaProducto= new ArrayList<modeloProducto>();
-        String  nombre = "nombre";
-        String  precio = "2";
-
-        //descripciones= ctx.getResources().getStringArray(R.array.descripciones);
-
-
-        listaProducto.add(get(nombre,precio));
-
-
-        //listaProducto.get(0).setSelected(true);
-        return listaProducto;
     }
 
 
 
-    private modeloProducto get(String nombre,String precio ) {
-        return new modeloProducto(nombre, precio,"0");
-    }
+
 
 
 
@@ -198,15 +183,20 @@ titulo = (TextView) findViewById(R.id.textView);
                  es.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View v) {
+
+
                          ArrayList<String> cadena = new ArrayList<String>();
-                         NumberPicker npNbJours;
+                         NumberPicker npNbJours, numini;
 
                          for (int i = 0; i < listView_final.getCount(); i++) {
+
                              v = listView_final.getChildAt(i);
-                             // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa);
+                             // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa)
                              npNbJours = (NumberPicker) v.findViewById(R.id.numberPicker);
+
                              // String NomDuQr=tvNomDuQr.getText().toString();
                              int NbJours = npNbJours.getValue();
+
                              //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
                              String tex = "cantidad de " + NbJours;
                              cadena.add(tex);
@@ -216,6 +206,21 @@ titulo = (TextView) findViewById(R.id.textView);
                          for (int i = 0; i < cadena.size(); i++) {
                              outputStrArr[i] = cadena.get(i);
                              Log.e("Salida",outputStrArr[i]);
+                         }
+
+
+                         final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
+                         final SQLiteDatabase db = admin.getReadableDatabase();
+                         String []a={"nombre","precio","cantidad"};
+                         Cursor c =db.query("productos", a, null, null, null, null, null);
+                         //recursivo
+                         while(c.moveToNext()){
+                             String nombre = c.getString(0);
+                             String precio =c.getString(1);
+                             String cantidad=c.getString(2);
+                             String con = precio.replace("$","");
+                             Log.e("Salida BD","salida "+con+" "+cantidad) ;
+
                          }
 
 
@@ -287,6 +292,76 @@ customDialog.show();
 
 
              break;
+            }
+
+            case R.id.menu_editar:{
+
+
+
+                for (int i=0; i<pro.size(); i++){
+
+
+                    if(pro.get(i).getSelected()){
+                        customDialog = new Dialog(this,R.style.Theme_Dialog_Translucent);
+                        //deshabilitamos el título por defecto
+                        customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        //obligamos al usuario a pulsar los botones para cerrarlo
+                        customDialog.setCancelable(false);
+                        //establecemos el contenido de nuestro dialog
+                        customDialog.setContentView(R.layout.dialog_insertar);
+                        TextView titulo = (TextView)customDialog.findViewById(R.id.info_text);
+                       final EditText cantidad = (EditText)customDialog.findViewById(R.id.cantidad_dialog);
+                        final EditText nombre = (EditText)customDialog.findViewById(R.id.nombre_input);
+                        final EditText precio = (EditText) customDialog.findViewById(R.id.Precio_dialog);
+                        titulo.setText("Edite el producto");
+                        nombre.setText(pro.get(i).getNombre());
+                        cantidad.setText(pro.get(i).getCantidad());
+                        precio.setText(pro.get(i).getPrecio());
+                        final SQLiteHelper admin = new SQLiteHelper(this, "esquites.db", null, 1);
+                        final SQLiteDatabase db = admin.getReadableDatabase();
+                        db.delete("productos","nombre = '"+pro.get(i).getNombre()+"'",null);
+                        pro.remove(i);
+                        pro_final.remove(i);
+                        Button guar = (Button)customDialog.findViewById(R.id.entrar_boton);
+                        guar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
+                                final ContentValues registro = new ContentValues();
+                                final SQLiteDatabase bd = admin1.getWritableDatabase();
+                                // bd.delete("productos",null,null);
+
+                                //listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
+                                registro.put("nombre",nombre.getText().toString());
+                                registro.put("precio",precio.getText().toString());
+                                registro.put("cantidad",cantidad.getText().toString());
+
+                                bd.insert("productos", null, registro);
+                                bd.close();
+
+                                adapter.notifyDataSetChanged();
+                                ad_final.notifyDataSetChanged();
+                                customDialog.dismiss();
+                                finish();
+                               startActivity(new Intent(getApplication(),InsertarProductoActivity.class));
+                            }
+                        });
+
+                        customDialog.show();
+                    }
+
+//                    if(listaProducto.get(i).isSelected()){
+                    //                      listaProducto.add(get(listaProducto.get(i).getTitulo(), listaProducto.get(i).getDescripcion(), listaProducto.get(i).getId_imagen()));
+                    //                    listaProducto.get(i).setSelected(false);
+                    //              }
+
+                            }
+
+                    //      adapter.notifyDataSetChanged();
+
+
+
+                break;
             }
 
             default:
