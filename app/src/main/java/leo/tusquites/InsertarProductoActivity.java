@@ -187,6 +187,11 @@ titulo = (TextView) findViewById(R.id.textView);
 
                          ArrayList<String> cadena = new ArrayList<String>();
                          NumberPicker npNbJours, numini;
+                         final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
+                         final SQLiteDatabase db = admin.getReadableDatabase();
+                         String []a={"nombre","precio","cantidad"};
+                         Cursor c =db.query("productos", a, null, null, null, null, null);
+                         //recursivo
 
                          for (int i = 0; i < listView_final.getCount(); i++) {
 
@@ -196,12 +201,24 @@ titulo = (TextView) findViewById(R.id.textView);
 
                              // String NomDuQr=tvNomDuQr.getText().toString();
                              int NbJours = npNbJours.getValue();
+                             //recursivo
+                             c.moveToNext();
+                                 String nombre = c.getString(0);
+                                 String precio =c.getString(1);
+                                 int cantidad= Integer.valueOf(c.getString(2));
+                                 String con = precio.replace("$","");
+                                 float prec = Float.parseFloat(con);
+                                 Log.e("Salida BD","salida "+cantidad+" - "+NbJours+" *"+prec+"  ="+(cantidad-NbJours)*prec) ;
+
+
+
 
                              //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
                              String tex = "cantidad de " + NbJours;
                              cadena.add(tex);
                              //QrEtOccurence.add(output);}
                          }
+                         
                          String[] outputStrArr = new String[cadena.size()];
                          for (int i = 0; i < cadena.size(); i++) {
                              outputStrArr[i] = cadena.get(i);
@@ -209,10 +226,7 @@ titulo = (TextView) findViewById(R.id.textView);
                          }
 
 
-                         final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
-                         final SQLiteDatabase db = admin.getReadableDatabase();
-                         String []a={"nombre","precio","cantidad"};
-                         Cursor c =db.query("productos", a, null, null, null, null, null);
+
                          //recursivo
                          while(c.moveToNext()){
                              String nombre = c.getString(0);
