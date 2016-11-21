@@ -47,7 +47,8 @@
         <activity
             android:name=".InsertarProductoActivity"
             android:label="@string/title_activity_insertar_producto"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FinalProductoActivity"></activity>
     </application>
 
 </manifest>

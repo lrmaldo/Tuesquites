@@ -1,4 +1,4 @@
-package leo.tusquites;
+package leo.tusquites.modelos;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,25 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-
 import android.widget.CompoundButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.List;
 
-import leo.tusquites.modelos.modeloProducto;
-
+import leo.tusquites.R;
+import leo.tusquites.list_adapter;
 
 /**
- * Created by Leo on 08/11/2016.
+ * Created by Leo on 20/11/2016.
  */
 
-public class list_adapter extends ArrayAdapter<modeloProducto> {
+public class list_adapter2 extends ArrayAdapter<modeloProducto> {
     private final List<modeloProducto> list;
     private final Context context;
 
-    public list_adapter(Context context,List<modeloProducto> list) {
+    public list_adapter2(Context context,List<modeloProducto> list) {
         super(context, R.layout.item_productos, list);
         this.context = context;
         this.list = list;
@@ -33,7 +32,7 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
     static class ViewHolder {//Un miembro protegido es accesible dentro de su clase y por instancias de clases derivadas.
 
         protected NumberPicker cantidad;
-        protected TextView  nombre;
+        protected TextView nombre;
 
         protected CheckBox checkbox;
 
@@ -52,16 +51,15 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
 
 
 
-            final ViewHolder viewHolder = new ViewHolder();
+            final list_adapter2.ViewHolder viewHolder = new list_adapter2.ViewHolder();
             viewHolder.nombre = (TextView) view.findViewById(R.id.NombreCa_precio);
 
             viewHolder.cantidad = (NumberPicker) view.findViewById(R.id.numberPicker);
             viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox);
 
             viewHolder.cantidad.setMinValue(0);
-           // viewHolder.cantidad.setMaxValue(200);
+            // viewHolder.cantidad.setMaxValue(200);
             viewHolder.cantidad.setWrapSelectorWheel(false);
-            viewHolder.cantidad.setEnabled(false);
 
             viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -78,14 +76,14 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
             viewHolder.checkbox.setTag(list.get(position));
         } else {
             view = convertView;
-            ((ViewHolder) view.getTag()).checkbox.setTag(list.get(position));
+            ((list_adapter2.ViewHolder) view.getTag()).checkbox.setTag(list.get(position));
 
         }
-        ViewHolder holder = (ViewHolder) view.getTag();
+        list_adapter2.ViewHolder holder = (list_adapter2.ViewHolder) view.getTag();
 
         holder.nombre.setText(list.get(position).getNombre());
         holder.checkbox.setText("$"+list.get(position).getPrecio());
-        holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidad()));
+      //  holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidad()));
         holder.cantidad.setMaxValue(Integer.parseInt(list.get(position).getCantidad()));
         holder.checkbox.setChecked(list.get(position).getSelected());
         return view;

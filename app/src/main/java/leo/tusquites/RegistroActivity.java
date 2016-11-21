@@ -114,7 +114,7 @@ public class RegistroActivity extends AppCompatActivity {
 
                                     Toast.makeText(RegistroActivity.this, "Cierra sesión y Vuelve a iniciar sesión." ,
                                             Toast.LENGTH_SHORT).show();
-                                    // Go to MainActivity
+                                    // Go to FinalProductoActivity
                                     startActivity(new Intent(RegistroActivity.this, PrincipalActivity.class));
                                     finish();
                                 }
@@ -133,7 +133,7 @@ public class RegistroActivity extends AppCompatActivity {
         // Write new user
         InsertarUsuario(user.getUid(), username, user.getEmail());
 
-        // Go to MainActivity
+        // Go to FinalProductoActivity
         startActivity(new Intent(RegistroActivity.this, PrincipalActivity.class));
         finish();
     }

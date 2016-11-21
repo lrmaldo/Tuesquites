@@ -64,7 +64,7 @@ import static leo.tusquites.R.drawable.ic_action_account_circle_40;
 public class DetalleUsuarioActivity extends AppCompatActivity  implements View.OnClickListener{
 
     public static final String EXTRA_POST_KEY = "post_key";
-    private static final String TAG = "Storage#MainActivity";
+    private static final String TAG = "Storage#FinalProductoActivity";
 
     private static final int RC_TAKE_PICTURE = 101;
     private static final int RC_STORAGE_PERMS = 102;

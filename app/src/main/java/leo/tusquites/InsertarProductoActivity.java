@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import leo.tusquites.modelos.SQLiteHelper;
+import leo.tusquites.modelos.list_adapter2;
 import leo.tusquites.modelos.modeloProducto;
 
 import static leo.tusquites.R.id.edi_cantidad;
@@ -104,9 +105,13 @@ titulo = (TextView) findViewById(R.id.textView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(nombre_producto.getText())|| TextUtils.isEmpty(precio.getText())){
-                    Snackbar.make(view, "falta poner el producto o el precio", Snackbar.LENGTH_LONG).setActionTextColor(getResources().getColor(R.color.colorPrimaryDark))
-                            .setAction("Action", null).show();
+                if(TextUtils.isEmpty(nombre_producto.getText())|| TextUtils.isEmpty(precio.getText())||TextUtils.isEmpty(edi_cantidad.getText())){
+                    Snackbar snackbar =  Snackbar.make(view, "Tal vez falta poner el nombre, precio o cantidad", Snackbar.LENGTH_LONG).setActionTextColor(getResources().getColor(R.color.colorPrimaryDark))
+                            .setAction("Action", null);
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.RED);
+                    snackbar.show();
 
                 }else {
                     final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
@@ -125,6 +130,7 @@ titulo = (TextView) findViewById(R.id.textView);
                     ad_final.notifyDataSetChanged();
                     nombre_producto.getText().clear();
                     precio.getText().clear();
+                    edi_cantidad.getText().clear();
                     re_cursor();
                     Snackbar.make(view, "Se ha agregado un nuevo producto", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -135,7 +141,7 @@ titulo = (TextView) findViewById(R.id.textView);
 
 
 
-                ad_final=new list_adapter(InsertarProductoActivity.this,pro_final);
+                ad_final=new list_adapter2(InsertarProductoActivity.this,pro_final);
                 adapter = new list_adapter(InsertarProductoActivity.this,pro);
         listView_final.setAdapter(ad_final);
         listView.setAdapter(adapter);
@@ -195,6 +201,7 @@ titulo = (TextView) findViewById(R.id.textView);
 
                          for (int i = 0; i < listView_final.getCount(); i++) {
 
+                            c.moveToPosition(i);
                              v = listView_final.getChildAt(i);
                              // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa)
                              npNbJours = (NumberPicker) v.findViewById(R.id.numberPicker);
@@ -202,23 +209,23 @@ titulo = (TextView) findViewById(R.id.textView);
                              // String NomDuQr=tvNomDuQr.getText().toString();
                              int NbJours = npNbJours.getValue();
                              //recursivo
-                             c.moveToNext();
-                                 String nombre = c.getString(0);
-                                 String precio =c.getString(1);
-                                 int cantidad= Integer.valueOf(c.getString(2));
-                                 String con = precio.replace("$","");
-                                 float prec = Float.parseFloat(con);
-                                 Log.e("Salida BD","salida "+cantidad+" - "+NbJours+" *"+prec+"  ="+(cantidad-NbJours)*prec) ;
 
 
+                             String precio = c.getString(1);
+                             int cantidad = Integer.valueOf(c.getString(2));
+                             String con = precio.replace("$", "");
+                             float prec = Float.parseFloat(con);
+                             Log.e("Salida BD", "salida " + cantidad + " - " + NbJours + " *" + prec + "  =" + (cantidad - NbJours) * prec);
 
 
                              //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
                              String tex = "cantidad de " + NbJours;
                              cadena.add(tex);
+
                              //QrEtOccurence.add(output);}
+
                          }
-                         
+
                          String[] outputStrArr = new String[cadena.size()];
                          for (int i = 0; i < cadena.size(); i++) {
                              outputStrArr[i] = cadena.get(i);
@@ -400,7 +407,7 @@ customDialog.show();
 
             modeloProducto d = new modeloProducto(nombre,precio
             ,cantidad);
-            modeloProducto d1 = new modeloProducto(nombre,precio,"0");
+            modeloProducto d1 = new modeloProducto(nombre,precio,cantidad);
             pro.add(d);
             pro_final.add(d1);
 
