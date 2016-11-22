@@ -47,15 +47,15 @@ public class list_adapter2 extends ArrayAdapter<modeloProducto> {
         if (convertView == null) {
             LayoutInflater inflator =LayoutInflater.from(context);// Activity.getLayoutInflater();
 
-            view = inflator.inflate(R.layout.item_productos, null);
+            view = inflator.inflate(R.layout.item_productos_final, null);
 
 
 
             final list_adapter2.ViewHolder viewHolder = new list_adapter2.ViewHolder();
-            viewHolder.nombre = (TextView) view.findViewById(R.id.NombreCa_precio);
+            viewHolder.nombre = (TextView) view.findViewById(R.id.nombre_final);
 
-            viewHolder.cantidad = (NumberPicker) view.findViewById(R.id.numberPicker);
-            viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox);
+            viewHolder.cantidad = (NumberPicker) view.findViewById(R.id.number_final);
+            viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox_f);
 
             viewHolder.cantidad.setMinValue(0);
             // viewHolder.cantidad.setMaxValue(200);

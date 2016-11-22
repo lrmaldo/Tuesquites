@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -19,26 +18,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import leo.tusquites.modelos.SQLiteHelper;
+import leo.tusquites.modelos.arrayproductosfinal;
 import leo.tusquites.modelos.list_adapter2;
 import leo.tusquites.modelos.modeloProducto;
 
-import static leo.tusquites.R.id.edi_cantidad;
 import static leo.tusquites.R.id.lista;
-import static leo.tusquites.R.id.nombreProducto;
 
 public class InsertarProductoActivity extends AppCompatActivity {
     EditText nombre_producto, precio,edi_cantidad;
@@ -48,6 +43,7 @@ public class InsertarProductoActivity extends AppCompatActivity {
     Button guardarlist;
     ArrayList<modeloProducto> pro = new ArrayList<>();
     Dialog customDialog = null;
+
 
     ArrayList<modeloProducto> pro_final = new ArrayList<>();
     ArrayAdapter<modeloProducto> adapter,ad_final;
@@ -134,6 +130,8 @@ titulo = (TextView) findViewById(R.id.textView);
                     re_cursor();
                     Snackbar.make(view, "Se ha agregado un nuevo producto", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    finish();
+                    startActivity(new Intent(getApplication(),InsertarProductoActivity.class));
                 }
             }
         });
@@ -192,45 +190,63 @@ titulo = (TextView) findViewById(R.id.textView);
 
 
                          ArrayList<String> cadena = new ArrayList<String>();
+                         ArrayList<arrayproductosfinal> input = new ArrayList<arrayproductosfinal>();
+                        // comunicador co = new comunicador();
                          NumberPicker npNbJours, numini;
                          final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
                          final SQLiteDatabase db = admin.getReadableDatabase();
                          String []a={"nombre","precio","cantidad"};
                          Cursor c =db.query("productos", a, null, null, null, null, null);
                          //recursivo
+                          //  co.setObjeto(null);
+
+                         final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
+                         final ContentValues registro = new ContentValues();
+                         final SQLiteDatabase bd = admin1.getWritableDatabase();
+                         // bd.delete("productos",null,null);
+
+                         //listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
 
                          for (int i = 0; i < listView_final.getCount(); i++) {
-
-                            c.moveToPosition(i);
                              v = listView_final.getChildAt(i);
-                             // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa)
-                             npNbJours = (NumberPicker) v.findViewById(R.id.numberPicker);
+                             npNbJours = (NumberPicker) v.findViewById(R.id.number_final);
+                             if (c.moveToNext()) {
 
-                             // String NomDuQr=tvNomDuQr.getText().toString();
-                             int NbJours = npNbJours.getValue();
-                             //recursivo
+                                 // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa)
 
 
-                             String precio = c.getString(1);
-                             int cantidad = Integer.valueOf(c.getString(2));
-                             String con = precio.replace("$", "");
-                             float prec = Float.parseFloat(con);
-                             Log.e("Salida BD", "salida " + cantidad + " - " + NbJours + " *" + prec + "  =" + (cantidad - NbJours) * prec);
+                                 // String NomDuQr=tvNomDuQr.getText().toString();
+                                 int NbJours = npNbJours.getValue();
+                                 //recursivo
+
+                                 String nombre = c.getString(0);
+                                 String precio = c.getString(1);
+                                 int cantidad = Integer.valueOf(c.getString(2));
+                                 String con = precio.replace("$", "");
+                                 float prec = Float.parseFloat(con);
+                                 float sub = (cantidad - NbJours) * prec;
+                                 Log.e("Salida BD", "salida " + cantidad + " - " + NbJours + " *" + prec + "  =" + (cantidad - NbJours) * prec);
 
 
-                             //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
-                             String tex = "cantidad de " + NbJours;
-                             cadena.add(tex);
+                                 //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
+                                 String tex = "cantidad de " + NbJours;
+                                 cadena.add(tex);
+                                // input.add(new arrayproductosfinal(i,nombre + " x " + (cantidad - NbJours), sub));
+                                 //QrEtOccurence.add(output);}
+                                 registro.put("descripcion",nombre + " x "+(cantidad- NbJours));
+                                 registro.put("subtotal",sub);
+                                 registro.put("precio",precio);
 
-                             //QrEtOccurence.add(output);}
+                                 bd.insert("productos_imp", null, registro);
+
+                                 Log.e("Insert producto_imp","salida "+i) ;
+
+                             }
 
                          }
+                         bd.close();
 
                          String[] outputStrArr = new String[cadena.size()];
-                         for (int i = 0; i < cadena.size(); i++) {
-                             outputStrArr[i] = cadena.get(i);
-                             Log.e("Salida",outputStrArr[i]);
-                         }
 
 
 
@@ -245,7 +261,14 @@ titulo = (TextView) findViewById(R.id.textView);
                          }
 
 
+
+
                     customDialog.dismiss();
+
+                         Intent intent = new Intent(InsertarProductoActivity.this, FinalProductoActivity.class);
+                         //intent.putExtra("miLista", input);
+                         startActivity(intent);
+                         finish();
                      }
                  });
 
