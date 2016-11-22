@@ -207,11 +207,11 @@ titulo = (TextView) findViewById(R.id.textView);
 
                          //listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
 
-                         for (int i = 0; i < listView_final.getCount(); i++) {
-                             v = listView_final.getChildAt(i);
-                             npNbJours = (NumberPicker) v.findViewById(R.id.number_final);
-                             if (c.moveToNext()) {
-
+                         //for (int i = 0; i <= listView_final.getCount(); i++) {
+                            int i =0;
+                             while (c.moveToNext()) {
+                                 v = listView_final.getChildAt(4);
+                                 npNbJours = (NumberPicker) v.findViewById(R.id.number_final);
                                  // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa)
 
 
@@ -240,10 +240,10 @@ titulo = (TextView) findViewById(R.id.textView);
                                  bd.insert("productos_imp", null, registro);
 
                                  Log.e("Insert producto_imp","salida "+i) ;
-
+                               i++;
                              }
 
-                         }
+                        // }
                          bd.close();
 
                          String[] outputStrArr = new String[cadena.size()];
@@ -417,7 +417,7 @@ customDialog.show();
         return super.onOptionsItemSelected(item);
     }
     private void re_cursor(){
-       pro.clear();
+      // pro.clear();
         final SQLiteHelper admin = new SQLiteHelper(this, "esquites.db", null, 1);
         final SQLiteDatabase db = admin.getReadableDatabase();
         String []a={"nombre","precio","cantidad"};
