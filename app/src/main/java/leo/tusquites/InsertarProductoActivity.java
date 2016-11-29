@@ -32,6 +32,7 @@ import leo.tusquites.modelos.SQLiteHelper;
 import leo.tusquites.modelos.arrayproductosfinal;
 import leo.tusquites.modelos.list_adapter2;
 import leo.tusquites.modelos.modeloProducto;
+import leo.tusquites.modelos.modeloProductoFinal;
 
 import static leo.tusquites.R.id.lista;
 
@@ -45,8 +46,9 @@ public class InsertarProductoActivity extends AppCompatActivity {
     Dialog customDialog = null;
     NumberPicker npNbJours;
 
-    ArrayList<modeloProducto> pro_final = new ArrayList<>();
-    ArrayAdapter<modeloProducto> adapter,ad_final;
+    ArrayList<modeloProductoFinal> pro_final = new ArrayList<>();
+    ArrayAdapter<modeloProducto> adapter;
+    ArrayAdapter<modeloProductoFinal> ad_final;
 
     private List<modeloProducto> listaProducto;
     boolean vista = true;
@@ -417,17 +419,18 @@ customDialog.show();
       // pro.clear();
         final SQLiteHelper admin = new SQLiteHelper(this, "esquites.db", null, 1);
         final SQLiteDatabase db = admin.getReadableDatabase();
-        String []a={"nombre","precio","cantidad"};
+        String []a={"nombre","precio","cantidad","cantidad_final"};
         Cursor c =db.query("productos", a, null, null, null, null, null);
         //recursivo
+
         while(c.moveToNext()){
             String nombre = c.getString(0);
             String precio =c.getString(1);
             String cantidad=c.getString(2);
-
+            String caFinal = c.getString(3);
             modeloProducto d = new modeloProducto(nombre,precio
             ,cantidad);
-            modeloProducto d1 = new modeloProducto(nombre,precio,cantidad);
+            modeloProductoFinal d1 = new modeloProductoFinal(nombre,precio,cantidad,caFinal);
             pro.add(d);
             pro_final.add(d1);
 
@@ -481,7 +484,7 @@ public void eliminarActualizar(){
         tableExists = true;
         if (tableExists){
             db.delete("productos_imp",null,null);
-            final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
+          /*  final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
             final ContentValues registro = new ContentValues();
             final SQLiteDatabase bd = admin1.getWritableDatabase();
             registro.put("cantidad_final","0");
@@ -492,7 +495,7 @@ public void eliminarActualizar(){
             while (c1.moveToNext()){
                 String nombre =c1.getString(0);
                 bd.update("productos",registro,"nombre = '"+nombre+"'",null);
-            }
+            }*/
 
 
             db.close();

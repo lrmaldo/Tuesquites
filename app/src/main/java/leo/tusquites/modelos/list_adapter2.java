@@ -22,11 +22,11 @@ import leo.tusquites.list_adapter;
  * Created by Leo on 20/11/2016.
  */
 
-public class list_adapter2 extends ArrayAdapter<modeloProducto> {
-    private final List<modeloProducto> list;
+public class list_adapter2 extends ArrayAdapter<modeloProductoFinal> {
+    private final List<modeloProductoFinal> list;
     private final Context context;
 
-    public list_adapter2(Context context,List<modeloProducto> list) {
+    public list_adapter2(Context context,List<modeloProductoFinal> list) {
         super(context, R.layout.item_productos, list);
         this.context = context;
         this.list = list;
@@ -61,7 +61,7 @@ public class list_adapter2 extends ArrayAdapter<modeloProducto> {
             viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox_f);
 
             viewHolder.cantidad.setMinValue(0);
-            // viewHolder.cantidad.setMaxValue(200);
+             //viewHolder.cantidad.setMaxValue(200);
             viewHolder.cantidad.setWrapSelectorWheel(false);
 
             viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -87,7 +87,7 @@ public class list_adapter2 extends ArrayAdapter<modeloProducto> {
         holder.nombre.setText(list.get(position).getNombre());
         String e ="$"+list.get(position).getPrecio();
         holder.checkbox.setText(e);
-      //  holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidad()));
+       holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidadFinal()));
         holder.cantidad.setMaxValue(Integer.parseInt(list.get(position).getCantidad()));
         holder.checkbox.setChecked(list.get(position).getSelected());
 
@@ -122,7 +122,7 @@ public class list_adapter2 extends ArrayAdapter<modeloProducto> {
 
     @Override
 
-    public modeloProducto getItem(int position) {
+    public modeloProductoFinal getItem(int position) {
         return super.getItem(position);
     }
 

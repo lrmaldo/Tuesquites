@@ -92,7 +92,7 @@ public class FinalProductoActivity extends AppCompatActivity {
         Log.e("elimino", "datos de esta actividad");
 
 
-        final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
+       /* final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
         final ContentValues registro = new ContentValues();
         final SQLiteDatabase bd = admin1.getWritableDatabase();
         registro.put("cantidad_final","0");
@@ -104,7 +104,7 @@ public class FinalProductoActivity extends AppCompatActivity {
             String nombre =c1.getString(0);
             bd.update("productos",registro,"nombre = '"+nombre+"'",null);
         }
-        db.close();
+        db.close();*/
 
         Intent intent = new Intent(FinalProductoActivity.this, InsertarProductoActivity.class);
         //intent.putExtra("miLista", input);
