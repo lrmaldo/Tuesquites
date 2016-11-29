@@ -25,15 +25,16 @@
         android:text="text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
-    <NumberPicker
-        android:id="@+id/numberPicker"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/cantidad_text_list"
+        android:layout_width="50dp"
         android:layout_height="80dp"
         android:layout_alignTop="@+id/NombreCa_precio"
-        android:layout_marginLeft="20dp"
         android:layout_toLeftOf="@+id/textView1"
-        android:orientation="horizontal" />
+        android:text="text"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
 
     <TextView
         android:id="@+id/textView1"

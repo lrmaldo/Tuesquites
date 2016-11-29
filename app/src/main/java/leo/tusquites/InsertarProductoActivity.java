@@ -43,7 +43,7 @@ public class InsertarProductoActivity extends AppCompatActivity {
     Button guardarlist;
     ArrayList<modeloProducto> pro = new ArrayList<>();
     Dialog customDialog = null;
-
+    NumberPicker npNbJours;
 
     ArrayList<modeloProducto> pro_final = new ArrayList<>();
     ArrayAdapter<modeloProducto> adapter,ad_final;
@@ -74,7 +74,7 @@ public class InsertarProductoActivity extends AppCompatActivity {
         re_cursor();
 
 
-
+eliminarActualizar();
 
 
 
@@ -119,6 +119,7 @@ titulo = (TextView) findViewById(R.id.textView);
                    registro.put("nombre",nombre_producto.getText().toString());
                     registro.put("precio",precio.getText().toString());
                     registro.put("cantidad",edi_cantidad.getText().toString());
+                    registro.put("cantidad_final","0");
 
                     bd.insert("productos", null, registro);
                     bd.close();
@@ -192,10 +193,10 @@ titulo = (TextView) findViewById(R.id.textView);
                          ArrayList<String> cadena = new ArrayList<String>();
                          ArrayList<arrayproductosfinal> input = new ArrayList<arrayproductosfinal>();
                         // comunicador co = new comunicador();
-                         NumberPicker npNbJours, numini;
+                        // NumberPicker npNbJours;
                          final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
                          final SQLiteDatabase db = admin.getReadableDatabase();
-                         String []a={"nombre","precio","cantidad"};
+                         String []a={"nombre","precio","cantidad","cantidad_final"};
                          Cursor c =db.query("productos", a, null, null, null, null, null);
                          //recursivo
                           //  co.setObjeto(null);
@@ -208,45 +209,41 @@ titulo = (TextView) findViewById(R.id.textView);
                          //listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
 
                          //for (int i = 0; i <= listView_final.getCount(); i++) {
-                            int i =0;
-                             while (c.moveToNext()) {
-                                 v = listView_final.getChildAt(4);
-                                 npNbJours = (NumberPicker) v.findViewById(R.id.number_final);
-                                 // tvNomDuQr=(TextView)v.findViewById(R.id.NombreCa)
+                           // int i =0;
+                           //  for(int i =0; i <= listView_final.getCount();i++) {
+                             while   (c.moveToNext()){
 
 
-                                 // String NomDuQr=tvNomDuQr.getText().toString();
-                                 int NbJours = npNbJours.getValue();
-                                 //recursivo
 
                                  String nombre = c.getString(0);
                                  String precio = c.getString(1);
                                  int cantidad = Integer.valueOf(c.getString(2));
+                                 int cantidad_final =Integer.valueOf(c.getString(3));
                                  String con = precio.replace("$", "");
                                  float prec = Float.parseFloat(con);
-                                 float sub = (cantidad - NbJours) * prec;
-                                 Log.e("Salida BD", "salida " + cantidad + " - " + NbJours + " *" + prec + "  =" + (cantidad - NbJours) * prec);
+                                 float sub = (cantidad - cantidad_final) * prec;
+                                 Log.e("Salida BD", "salida " + cantidad + " - " + cantidad_final + " *" + prec + "  =" + (cantidad - cantidad_final) * prec);
 
 
                                  //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
-                                 String tex = "cantidad de " + NbJours;
+                                 String tex = "cantidad de " + cantidad_final;
                                  cadena.add(tex);
                                 // input.add(new arrayproductosfinal(i,nombre + " x " + (cantidad - NbJours), sub));
                                  //QrEtOccurence.add(output);}
-                                 registro.put("descripcion",nombre + " x "+(cantidad- NbJours));
+                                 registro.put("descripcion",nombre + " x "+(cantidad- cantidad_final));
                                  registro.put("subtotal",sub);
                                  registro.put("precio",precio);
 
                                  bd.insert("productos_imp", null, registro);
 
-                                 Log.e("Insert producto_imp","salida "+i) ;
-                               i++;
+                                 Log.e("Insert producto_imp","salida "+c.getPosition()) ;
+                              // i++;
                              }
 
                         // }
                          bd.close();
 
-                         String[] outputStrArr = new String[cadena.size()];
+
 
 
 
@@ -470,7 +467,45 @@ customDialog.show();
         //   outputStrArr[i] = QrEtOccurence.get(i);}
 
     }
+public void eliminarActualizar(){
+    //SQLiteDatabase mDatabase = openOrCreateDatabase("esquites.db", SQLiteDatabase.CREATE_IF_NECESSARY,null);
+    final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
+    final SQLiteDatabase db = admin.getReadableDatabase();
+    Cursor c = null;
+    boolean tableExists = false;
+/* get cursor on it */
+    try
+    {
+        c = db.query("productos_imp", null,
+                null, null, null, null, null);
+        tableExists = true;
+        if (tableExists){
+            db.delete("productos_imp",null,null);
+            final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
+            final ContentValues registro = new ContentValues();
+            final SQLiteDatabase bd = admin1.getWritableDatabase();
+            registro.put("cantidad_final","0");
 
+            String []a={"nombre","precio","cantidad","cantidad_final"};
+            Cursor c1 =db.query("productos_imp", a, null, null, null, null, null);
+            registro.put("cantidad_final","0");
+            while (c1.moveToNext()){
+                String nombre =c1.getString(0);
+                bd.update("productos",registro,"nombre = '"+nombre+"'",null);
+            }
+
+
+            db.close();
+            Log.e("elimino", "datos de esta actividad");
+        }
+
+
+    }
+    catch (Exception e) {
+    /* fail */
+        Log.e("NOT", "tabla not exist :(((");
+    }
+}
 
 
 

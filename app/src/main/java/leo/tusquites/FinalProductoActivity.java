@@ -1,5 +1,6 @@
 package leo.tusquites;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -89,6 +90,20 @@ public class FinalProductoActivity extends AppCompatActivity {
         db.delete("productos_imp",null,null);
         db.close();
         Log.e("elimino", "datos de esta actividad");
+
+
+        final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
+        final ContentValues registro = new ContentValues();
+        final SQLiteDatabase bd = admin1.getWritableDatabase();
+        registro.put("cantidad_final","0");
+
+        String []a={"nombre","precio","cantidad","cantidad_final"};
+        Cursor c1 =db.query("productos_imp", a, null, null, null, null, null);
+        registro.put("cantidad_final","0");
+        while (c1.moveToNext()){
+            String nombre =c1.getString(0);
+            bd.update("productos",registro,"nombre = '"+nombre+"'",null);
+        }
 
         Intent intent = new Intent(FinalProductoActivity.this, InsertarProductoActivity.class);
         //intent.putExtra("miLista", input);

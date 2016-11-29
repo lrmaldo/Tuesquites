@@ -27,7 +27,7 @@
 
 
     <NumberPicker
-        android:id="@+id/number_final"
+        android:id="@+id/numero_final"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_alignTop="@+id/NombreCa_precio"

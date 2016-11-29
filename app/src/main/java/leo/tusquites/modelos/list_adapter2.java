@@ -1,6 +1,9 @@
 package leo.tusquites.modelos;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +45,7 @@ public class list_adapter2 extends ArrayAdapter<modeloProducto> {
 
     @Override
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = null;
         if (convertView == null) {
             LayoutInflater inflator =LayoutInflater.from(context);// Activity.getLayoutInflater();
@@ -54,7 +57,7 @@ public class list_adapter2 extends ArrayAdapter<modeloProducto> {
             final list_adapter2.ViewHolder viewHolder = new list_adapter2.ViewHolder();
             viewHolder.nombre = (TextView) view.findViewById(R.id.nombre_final);
 
-            viewHolder.cantidad = (NumberPicker) view.findViewById(R.id.number_final);
+            viewHolder.cantidad = (NumberPicker) view.findViewById(R.id.numero_final);
             viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox_f);
 
             viewHolder.cantidad.setMinValue(0);
@@ -82,10 +85,26 @@ public class list_adapter2 extends ArrayAdapter<modeloProducto> {
         list_adapter2.ViewHolder holder = (list_adapter2.ViewHolder) view.getTag();
 
         holder.nombre.setText(list.get(position).getNombre());
-        holder.checkbox.setText("$"+list.get(position).getPrecio());
+        String e ="$"+list.get(position).getPrecio();
+        holder.checkbox.setText(e);
       //  holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidad()));
         holder.cantidad.setMaxValue(Integer.parseInt(list.get(position).getCantidad()));
         holder.checkbox.setChecked(list.get(position).getSelected());
+
+        final SQLiteHelper  admin1 = new SQLiteHelper(context,"esquites.db",null,1);
+        final ContentValues registro = new ContentValues();
+        final SQLiteDatabase bd = admin1.getWritableDatabase();
+        holder.cantidad.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+                registro.put("cantidad_final",newVal);
+                bd.update("productos",registro,"nombre= '"+list.get(position).getNombre()+"'",null);
+                    Log.e("nu nuevo cambio", "cambio " + newVal + " de la posicion " + list.get(position).getNombre());
+
+            }
+        });
+
         return view;
     }
 

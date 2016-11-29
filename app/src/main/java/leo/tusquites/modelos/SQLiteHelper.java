@@ -15,7 +15,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table productos (id  INTEGER PRIMARY KEY AUTOINCREMENT, nombre text, precio text,cantidad text)");
+        db.execSQL("create table productos (id  INTEGER PRIMARY KEY AUTOINCREMENT, nombre text, precio text,cantidad text,cantidad_final integer)");
         db.execSQL("create table productos_ini (id  INTEGER PRIMARY KEY AUTOINCREMENT, nombre text, precio real,cantidad integer)");
         db.execSQL("create table productos_imp (id  INTEGER PRIMARY KEY AUTOINCREMENT, descripcion text, subtotal real, precio text)");
 

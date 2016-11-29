@@ -34,8 +34,8 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
 
     static class ViewHolder {//Un miembro protegido es accesible dentro de su clase y por instancias de clases derivadas.
 
-        protected NumberPicker cantidad;
-        protected TextView  nombre;
+
+        protected TextView  nombre, cantidad;
 
         protected CheckBox checkbox;
 
@@ -57,13 +57,13 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
                 final ViewHolder viewHolder = new ViewHolder();
                 viewHolder.nombre = (TextView) view.findViewById(R.id.NombreCa_precio);
 
-                viewHolder.cantidad = (NumberPicker) view.findViewById(R.id.numberPicker);
+               viewHolder.cantidad = (TextView) view.findViewById(R.id.cantidad_text_list);
                 viewHolder.checkbox = (CheckBox) view.findViewById(R.id.checkBox);
 
-                viewHolder.cantidad.setMinValue(0);
+                //viewHolder.cantidad.setMinValue(0);
                 // viewHolder.cantidad.setMaxValue(200);
-                viewHolder.cantidad.setWrapSelectorWheel(false);
-                viewHolder.cantidad.setEnabled(false);
+                //viewHolder.cantidad.setWrapSelectorWheel(false);
+                //viewHolder.cantidad.setEnabled(false);
 
                 viewHolder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -86,10 +86,11 @@ public class list_adapter extends ArrayAdapter<modeloProducto> {
             ViewHolder holder = (ViewHolder) view.getTag();
 
             holder.nombre.setText(list.get(position).getNombre());
-            holder.checkbox.setText("$" + list.get(position).getPrecio());
-            holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidad()));
-            holder.cantidad.setMaxValue(Integer.parseInt(list.get(position).getCantidad()));
-
+            String con ="$" + list.get(position).getPrecio();
+            holder.checkbox.setText(con);
+          //  holder.cantidad.setValue(Integer.parseInt(list.get(position).getCantidad()));
+            //holder.cantidad.setMaxValue(Integer.parseInt(list.get(position).getCantidad()));
+            holder.cantidad.setText(list.get(position).getCantidad());
             holder.checkbox.setChecked(list.get(position).getSelected());
         }catch (Exception e){
             Log.e("excepcion ","numero invalido "+e);
