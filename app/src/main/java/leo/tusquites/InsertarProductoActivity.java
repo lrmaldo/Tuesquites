@@ -486,8 +486,8 @@ public void eliminarActualizar(){
             final SQLiteDatabase bd = admin1.getWritableDatabase();
             registro.put("cantidad_final","0");
 
-            String []a={"nombre","precio","cantidad","cantidad_final"};
-            Cursor c1 =db.query("productos_imp", a, null, null, null, null, null);
+            String []a={"nombre"};
+            Cursor c1 =db.query("productos", a, null, null, null, null, null);
             registro.put("cantidad_final","0");
             while (c1.moveToNext()){
                 String nombre =c1.getString(0);

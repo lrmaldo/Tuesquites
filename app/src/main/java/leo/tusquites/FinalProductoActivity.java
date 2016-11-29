@@ -88,7 +88,7 @@ public class FinalProductoActivity extends AppCompatActivity {
         final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
         final SQLiteDatabase db = admin.getReadableDatabase();
         db.delete("productos_imp",null,null);
-        db.close();
+       // db.close();
         Log.e("elimino", "datos de esta actividad");
 
 
@@ -97,13 +97,14 @@ public class FinalProductoActivity extends AppCompatActivity {
         final SQLiteDatabase bd = admin1.getWritableDatabase();
         registro.put("cantidad_final","0");
 
-        String []a={"nombre","precio","cantidad","cantidad_final"};
-        Cursor c1 =db.query("productos_imp", a, null, null, null, null, null);
+        String []a={"nombre"};
+        Cursor c1 =db.query("productos", a, null, null, null, null, null);
         registro.put("cantidad_final","0");
         while (c1.moveToNext()){
             String nombre =c1.getString(0);
             bd.update("productos",registro,"nombre = '"+nombre+"'",null);
         }
+        db.close();
 
         Intent intent = new Intent(FinalProductoActivity.this, InsertarProductoActivity.class);
         //intent.putExtra("miLista", input);
