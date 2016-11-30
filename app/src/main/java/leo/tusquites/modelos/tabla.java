@@ -2,8 +2,13 @@ package leo.tusquites.modelos;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -71,7 +76,48 @@ public class tabla {
         FILAS++;
 
     }
+    public void agregarUltimaTabla(ArrayList<String> elementos)
+    {
+        COLUMNAS=3;
+        TableRow.LayoutParams layoutCelda;
+        TableRow.LayoutParams layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+        TableRow fila = new TableRow(actividad);
+        fila.setLayoutParams(layoutFila);
 
+        for(int i = 0; i< elementos.size(); i++)
+        {
+            TextView texto = new TextView(actividad);
+
+            if(i==2){
+                texto.setGravity(Gravity.LEFT);
+           }else{
+                texto.setGravity(Gravity.RIGHT);
+            }
+
+
+
+            texto.setTextColor(Color.BLACK);
+            SpannableString spanString = new SpannableString(String.valueOf(elementos.get(i)));
+            //spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
+            spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+            spanString.setSpan(new StyleSpan(Typeface.NORMAL), 0, spanString.length(), 0);
+            texto.setText(spanString);
+            texto.setPadding(2,0,0,0);
+            // texto.setTextAppearance(actividad, R.style.estilo_celda);
+            // texto.setBackgroundResource(R.drawable.tabla_celda);
+            layoutCelda = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+            texto.setLayoutParams(layoutCelda);
+
+            fila.addView(texto);
+        }
+
+        tabla.addView(fila);
+        filas.add(fila);
+
+
+        FILAS++;
+
+    }
     /**
      * Elimina una fila de la tabla
      * @param indicefilaeliminar Indice de la fila a eliminar

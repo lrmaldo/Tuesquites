@@ -200,6 +200,7 @@ titulo = (TextView) findViewById(R.id.textView);
                          final SQLiteDatabase db = admin.getReadableDatabase();
                          String []a={"nombre","precio","cantidad","cantidad_final"};
                          Cursor c =db.query("productos", a, null, null, null, null, null);
+
                          //recursivo
                           //  co.setObjeto(null);
 
@@ -362,9 +363,16 @@ customDialog.show();
                         precio.setText(pro.get(i).getPrecio());
                         final SQLiteHelper admin = new SQLiteHelper(this, "esquites.db", null, 1);
                         final SQLiteDatabase db = admin.getReadableDatabase();
-                        db.delete("productos","nombre = '"+pro.get(i).getNombre()+"'",null);
+
+                      final Cursor c = db.rawQuery("Select id from productos where nombre = '"+pro.get(i).getNombre()+"'",null);
+
+                            c.moveToNext();
+                            final String _id = c.getString(0);
+
+                        /*db.delete("productos","nombre = '"+pro.get(i).getNombre()+"'",null);
+
                         pro.remove(i);
-                        pro_final.remove(i);
+                        pro_final.remove(i);*/
                         Button guar = (Button)customDialog.findViewById(R.id.entrar_boton);
                         guar.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -378,8 +386,10 @@ customDialog.show();
                                 registro.put("nombre",nombre.getText().toString());
                                 registro.put("precio",precio.getText().toString());
                                 registro.put("cantidad",cantidad.getText().toString());
+                                registro.put("cantidad_final","0");
 
-                                bd.insert("productos", null, registro);
+                                //bd.insert("productos", null, registro);
+                                bd.update("productos",registro,"id = '"+_id+"'",null);
                                 bd.close();
 
                                 adapter.notifyDataSetChanged();
