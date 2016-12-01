@@ -11,6 +11,7 @@ package leo.tusquites.modelos;
 public class usuarios {
 
 
+    public String uid;
     public String nombre;
     public String email;
     public String url_foto;
@@ -19,7 +20,8 @@ public class usuarios {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
 
-    public usuarios(String nombre, String email, String url_foto) {
+    public usuarios(String uid, String nombre, String email, String url_foto) {
+        this.uid =uid;
         this.nombre = nombre;
         this.email = email;
         this.url_foto=url_foto;

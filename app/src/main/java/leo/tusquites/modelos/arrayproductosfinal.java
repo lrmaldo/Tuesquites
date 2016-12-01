@@ -1,14 +1,19 @@
 package leo.tusquites.modelos;
 
+import java.security.Key;
+import java.util.HashMap;
+
 /**
  * Created by Leo on 20/11/2016.
  */
 
-public class arrayproductosfinal {
+public class arrayproductosfinal extends HashMap<String, String> {
+
 
     String detalle;
     String precio;
     String subtotal;
+
 
 
 
@@ -34,4 +39,20 @@ public class arrayproductosfinal {
         this.subtotal = subtotal;
     }
 
+    public String getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(String precio) {
+        this.precio = precio;
+    }
+
+    @Override
+    public String toString() {
+        return "arrayproductosfinal{" +
+                "detalle='" + detalle + '\'' +
+                ", precio='" + precio + '\'' +
+                ", subtotal='" + subtotal + '\'' +
+                '}';
+    }
 }

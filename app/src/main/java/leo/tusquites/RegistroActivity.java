@@ -138,7 +138,7 @@ public class RegistroActivity extends AppCompatActivity {
         finish();
     }
 private  void InsertarUsuario(String userID, String nombre, String email){
-    usuarios user = new usuarios(nombre,email,"false");
+    usuarios user = new usuarios(userID,nombre,email,"false");
    mDatabase.child("usuarios").child(userID).setValue(user);
    // auth.signOut();
 

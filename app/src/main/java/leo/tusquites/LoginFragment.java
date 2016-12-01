@@ -74,7 +74,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
-                    if(user.getUid().equals("VQWXsiI7xlRQP1gReJu45AUbKoa2")) {
+                    if(user.getUid().equals("ZSLE8gt1wqeGiWBIMIVBUoSYq012")) {
                         showPushNotifications();
                         // startActivity(new Intent(getActivity(), PrincipalActivity.class));
                         //getActivity().finish();

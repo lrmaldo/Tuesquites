@@ -1,6 +1,5 @@
 package leo.tusquites;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,30 +8,49 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.api.model.StringList;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import leo.tusquites.modelos.SQLiteHelper;
 import leo.tusquites.modelos.arrayproductosfinal;
 import leo.tusquites.modelos.tabla;
+import leo.tusquites.modelos.usuarios;
 
-import static android.R.attr.duration;
-import static android.R.id.message;
+public class FinalProductoActivity extends BaseActivity {
 
-public class FinalProductoActivity extends AppCompatActivity {
-
-    ArrayList<arrayproductosfinal> lista = new ArrayList<arrayproductosfinal>();
+    ArrayList<arrayproductosfinal> lista = new ArrayList<>();
+    Map<String, arrayproductosfinal> result = new TreeMap<String,arrayproductosfinal>();
+    Gson gson = new Gson();
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.final_producto_main);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+
+
 
         Log.e("netHabilitada", Boolean.toString(isNetDisponible()));
         if (isNetDisponible()|| isOnlineNet()){
@@ -56,6 +74,7 @@ public class FinalProductoActivity extends AppCompatActivity {
         String []a={"descripcion","subtotal","precio"};
         Cursor c =db.query("productos_imp", a, null, null, null, null, null);
         float total =0;
+        int i =0;
         while(c.moveToNext()){
             String descripcion = c.getString(0);
             String subtotal =c.getString(1);
@@ -65,16 +84,20 @@ public class FinalProductoActivity extends AppCompatActivity {
            // String con = precio.replace("$","");
             Log.e("Salida BD","salida descripcion: "+descripcion+" subtotal: "+subtotal+" precio: "+precio+" total "+total) ;
 
-            // lista.add(new arrayproductosfinal(descripcion,"$"+precio,subtotal));
+
             ArrayList<String> elementos = new ArrayList<String>();
             elementos.add(descripcion);
             elementos.add("$"+precio);
             elementos.add("$"+subtotal);
             tab.agregarFilaTabla(elementos);
-
+            String it =String.valueOf(i);
+            result.put(it,new arrayproductosfinal(descripcion,"$"+precio,"$"+subtotal));
+            i++;
+           // lista.add(new arrayproductosfinal(descripcion,"$"+precio,subtotal));
 
         }
-
+        String it =String.valueOf(i+1);
+        result.put(it,new arrayproductosfinal("        ","Total:","$"+total));
        ArrayList<String> ultima = new ArrayList<String>();
         String totalString =Float.toString(total);
         ultima.add("");
@@ -86,6 +109,122 @@ public class FinalProductoActivity extends AppCompatActivity {
 
 
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu meu){
+        getMenuInflater().inflate(R.menu.menu_final,meu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+
+        switch (id) {
+
+            case R.id.menu_subir:
+
+
+                // [START single_value_read]
+                final String userId = getUid();
+                mDatabase.child("usuarios").child(userId).addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // Get user value
+                                usuarios user = dataSnapshot.getValue(usuarios.class);
+
+                                // [START_EXCLUDE]
+                                if (user == null) {
+                                    // User is null, error out
+                                    Log.e("final", "User " + userId + " is unexpectedly null");
+                                    Toast.makeText(FinalProductoActivity.this,
+                                            "Error: could not fetch user.",
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Write new post
+                                    escribirRegistro(userId);
+                                }
+
+                                // Finish this Activity, back to the stream
+
+                                finish();
+                                // [END_EXCLUDE]
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.w("final", "getUser:onCancelled", databaseError.toException());
+                                // [START_EXCLUDE]
+                                //setEditingEnabled(true);
+                                // [END_EXCLUDE]
+                            }
+                        });
+
+
+
+
+                break;
+
+
+           default:
+                break;
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+
+    private void escribirRegistro(String userId) {
+        // Create new post at /user-posts/$userid/$postid and at
+        // /posts/$postid simultaneously
+
+        try {
+            String key = mDatabase.child("Registros").push().getKey();
+
+
+
+            //Post post = new Post(userId, username, title, body);
+           /* Map<String, Object> postValues = new HashMap<>();*/
+            Map<String, Object> childUpdates = new HashMap<>();
+            for (Map.Entry<String, arrayproductosfinal> jugador : result.entrySet()) {
+                String clave = jugador.getKey();
+                arrayproductosfinal valor = jugador.getValue();
+
+               /* postValues.put("productos",valor.getDetalle());
+                postValues.put("precio", valor.getPrecio());
+                postValues.put("subtotal", valor.getSubtotal());*/
+                childUpdates.put("/Registros/" + key+"/"+clave ,valor.getDetalle()+"  "+valor.getPrecio()+"  "+valor.getSubtotal() );
+                childUpdates.put("/usuario-registro/" + userId + "/" + key + "/" + clave, valor.getDetalle()+"  "+valor.getPrecio()+"  "+valor.getSubtotal());
+
+
+                Log.e("impresion Map", clave + "  ->  " + valor.toString());
+                mDatabase.updateChildren(childUpdates);
+            }
+
+            mDatabase.updateChildren(childUpdates);
+
+        }catch (Exception e){
+            Log.e("Error",e.toString());
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
     @Override
     public void onBackPressed() {
 
