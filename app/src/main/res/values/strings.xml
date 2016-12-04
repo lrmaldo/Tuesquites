@@ -22,4 +22,6 @@
     <string name="btn_regresar"><![CDATA[<< Regresar]]></string>
     <string name="title_activity_insertar_productos">Insertar_productosActivity</string>
     <string name="title_activity_insertar_producto">InsertarProductoActivity</string>
+    <string name="recientes">Registros Recientes</string>
+    <string name="mis_registros">Mis Registros</string>
 </resources>

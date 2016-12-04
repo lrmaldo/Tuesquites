@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
@@ -145,7 +146,12 @@ public class FinalProductoActivity extends BaseActivity {
                                             Toast.LENGTH_SHORT).show();
                                 } else {
                                     // Write new post
-                                    escribirRegistro(userId);
+                                    Long timestamp = System.currentTimeMillis();
+
+
+                                    result.put("usuario",new arrayproductosfinal(user.nombre,"",""));
+                                    result.put("tiempo",new arrayproductosfinal(timestamp.toString(),"",""));
+                                    escribirRegistro(userId,user.nombre,timestamp);
                                 }
 
                                 // Finish this Activity, back to the stream
@@ -180,7 +186,7 @@ public class FinalProductoActivity extends BaseActivity {
     }
 
 
-    private void escribirRegistro(String userId) {
+    private void escribirRegistro(String userId, String usuario, Long time) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
 
@@ -188,10 +194,11 @@ public class FinalProductoActivity extends BaseActivity {
             String key = mDatabase.child("Registros").push().getKey();
 
 
-
-            //Post post = new Post(userId, username, title, body);
-           /* Map<String, Object> postValues = new HashMap<>();*/
             Map<String, Object> childUpdates = new HashMap<>();
+            //Post post = new Post(userId, username, title, body);
+
+
+
             for (Map.Entry<String, arrayproductosfinal> jugador : result.entrySet()) {
                 String clave = jugador.getKey();
                 arrayproductosfinal valor = jugador.getValue();
@@ -206,6 +213,12 @@ public class FinalProductoActivity extends BaseActivity {
                 Log.e("impresion Map", clave + "  ->  " + valor.toString());
                 mDatabase.updateChildren(childUpdates);
             }
+
+           /* Map<String, Object> postValues = new HashMap<>();
+            postValues.put("usuario",usuario);
+            postValues.put("tiempo",time);
+            childUpdates.put("/Registros/" + key+"/" ,postValues);
+            childUpdates.put("/usuario-registro/" + userId + "/" + key + "/" ,postValues);*/
 
             mDatabase.updateChildren(childUpdates);
 
