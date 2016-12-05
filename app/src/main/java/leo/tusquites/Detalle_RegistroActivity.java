@@ -3,6 +3,7 @@ package leo.tusquites;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import leo.tusquites.modelos.modeloRegistro;
+import leo.tusquites.modelos.tabla;
 
 public class Detalle_RegistroActivity extends AppCompatActivity {
     public static final String EXTRA_POST_KEY = "post_key";
@@ -50,7 +52,7 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
+       final tabla tab = new tabla(this, (TableLayout)findViewById(R.id.tabla));
         // Add value event listener to the post
         // [START post_value_event_listener]
         ValueEventListener postListener = new ValueEventListener() {
@@ -63,11 +65,17 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.body);*/
                 // [END_EXCLUDE]
+
                 try {
                     //JSONObject a = new JSONObject(registro.Json.toString());
                     JSONArray array = new JSONArray(registro.Json.toString());
                     for(int i=0; i<array.length(); i++){
                        JSONObject jsonObj  = array.getJSONObject(i);
+                        ArrayList<String> elementos = new ArrayList<String>();
+                        elementos.add(jsonObj.getString("descripcion"));
+                        elementos.add(jsonObj.getString("precio"));
+                        elementos.add(jsonObj.getString("subtotal"));
+                        tab.agregarFilaTabla(elementos);
 
                        /* System.out.println(jsonObj.getString("descripcion"));
                         System.out.println(jsonObj.getString("precio"));
@@ -76,6 +84,14 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
                         Log.e("JSon completo",registro.Json.toString());
 
                     }
+                    ArrayList<String> ultima = new ArrayList<String>();
+
+                    ultima.add("");
+                    ultima.add("Total:");
+
+                    ultima.add("$"+registro.total);
+                    tab.agregarUltimaTabla(ultima);
+
 
 
 
