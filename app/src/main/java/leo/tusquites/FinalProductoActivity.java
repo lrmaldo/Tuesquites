@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -248,31 +249,42 @@ public class FinalProductoActivity extends BaseActivity {
 
         final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
         final SQLiteDatabase db = admin.getReadableDatabase();
-        String []a={"descripcion","subtotal","precio"};
+        /*String []a={"descripcion","subtotal","precio"};
         Cursor c =db.query("productos_imp", a, null, null, null, null, null);
+*/
+        //String myPath = DB_PATH + DB_NAME;// Set path to your database
+
+        String myTable = "productos_imp";//Set name of your table
+
+//or you can use `context.getDatabasePath("my_db_test.db")`
+
+        //SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+
+        String searchQuery = "SELECT  * FROM " + myTable;
+        Cursor cursor = db.rawQuery(searchQuery, null );
 
         JSONArray resultSet     = new JSONArray();
-        JSONObject rowObject = new JSONObject();
-        c.moveToFirst();
-        while (c.isAfterLast() == false) {
 
-            int totalColumn = c.getColumnCount();
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
 
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
 
             for( int i=0 ;  i< totalColumn ; i++ )
             {
-                if( c.getColumnName(i) != null )
+                if( cursor.getColumnName(i) != null )
                 {
                     try
                     {
-                        if( c.getString(i) != null )
+                        if( cursor.getString(i) != null )
                         {
-                            Log.d("TAG_NAME", c.getString(i) );
-                            rowObject.put(c.getColumnName(i) ,  c.getString(i) );
+                            Log.d("TAG_NAME", cursor.getString(i) );
+                            rowObject.put(cursor.getColumnName(i) ,  cursor.getString(i) );
                         }
                         else
                         {
-                            rowObject.put( c.getColumnName(i) ,  "" );
+                            rowObject.put( cursor.getColumnName(i) ,  "" );
                         }
                     }
                     catch( Exception e )
@@ -282,11 +294,12 @@ public class FinalProductoActivity extends BaseActivity {
                 }
             }
             resultSet.put(rowObject);
-            c.moveToNext();
+            cursor.moveToNext();
         }
-        c.close();
-        Log.d("TAG_NAME",resultSet.toString() );
-        return  resultSet;
+        cursor.close();
+        Log.d("TAG_NAME", resultSet.toString() );
+        return resultSet;
+
     }
 
 

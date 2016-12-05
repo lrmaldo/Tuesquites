@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 
+import leo.tusquites.Detalle_RegistroActivity;
 import leo.tusquites.R;
 
 import leo.tusquites.modelos.modeloRegistro;
@@ -88,9 +89,9 @@ public abstract class RegistroListFragmento extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // Launch PostDetailActivity
-                      /*  Intent intent = new Intent(getActivity(), PostDetailActivity.class);
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
-                        startActivity(intent);*/
+                        Intent intent = new Intent(getActivity(), Detalle_RegistroActivity.class);
+                        intent.putExtra(Detalle_RegistroActivity.EXTRA_POST_KEY, postKey);
+                        startActivity(intent);
                     }
                 });
 

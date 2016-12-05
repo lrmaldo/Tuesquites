@@ -15,4 +15,11 @@
     <dimen name="normal_padding">8dp</dimen>
     <dimen name="button_padding">24dp</dimen>
     <dimen name="perfil_image_size">100dp</dimen>
+
+    <dimen name="headerbar_elevation">4dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="size_fab">56dp</dimen>
+
+    <dimen name="avatar_size">40dp</dimen>
+    <dimen name="fab_elevation">16dp</dimen>
 </resources>
