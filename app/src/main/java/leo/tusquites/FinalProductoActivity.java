@@ -26,6 +26,9 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +42,7 @@ import leo.tusquites.modelos.usuarios;
 public class FinalProductoActivity extends BaseActivity {
 
     ArrayList<arrayproductosfinal> lista = new ArrayList<>();
-    Map<String, arrayproductosfinal> result = new TreeMap<String,arrayproductosfinal>();
+    Map<String, String> result = new TreeMap<String,String>();
     Gson gson = new Gson();
     private DatabaseReference mDatabase;
     @Override
@@ -91,19 +94,19 @@ public class FinalProductoActivity extends BaseActivity {
             elementos.add("$"+precio);
             elementos.add("$"+subtotal);
             tab.agregarFilaTabla(elementos);
-            String it =String.valueOf(i);
-            result.put(it,new arrayproductosfinal(descripcion,"$"+precio,"$"+subtotal));
+            //String it =String.valueOf(i);
+            //result.put(it,new arrayproductosfinal(descripcion,"$"+precio,"$"+subtotal));
             i++;
            // lista.add(new arrayproductosfinal(descripcion,"$"+precio,subtotal));
 
         }
-        String it =String.valueOf(i+1);
-        result.put(it,new arrayproductosfinal("        ","Total:","$"+total));
+        //String it =String.valueOf(i+1);
+
        ArrayList<String> ultima = new ArrayList<String>();
         String totalString =Float.toString(total);
         ultima.add("");
         ultima.add("Total:");
-
+        result.put("total","$"+total);
         ultima.add("$"+totalString);
         tab.agregarUltimaTabla(ultima);
 
@@ -149,8 +152,9 @@ public class FinalProductoActivity extends BaseActivity {
                                     Long timestamp = System.currentTimeMillis();
 
 
-                                    result.put("usuario",new arrayproductosfinal(user.nombre,"",""));
-                                    result.put("tiempo",new arrayproductosfinal(timestamp.toString(),"",""));
+                                    result.put("usuario",user.nombre);
+                                    result.put("tiempo",timestamp.toString());
+                                    result.put("Json",getResults().toString());
                                     escribirRegistro(userId,user.nombre,timestamp);
                                 }
 
@@ -199,20 +203,23 @@ public class FinalProductoActivity extends BaseActivity {
 
 
 
-            for (Map.Entry<String, arrayproductosfinal> jugador : result.entrySet()) {
+            /*for (Map.Entry<String, arrayproductosfinal> jugador : result.entrySet()) {
                 String clave = jugador.getKey();
                 arrayproductosfinal valor = jugador.getValue();
 
-               /* postValues.put("productos",valor.getDetalle());
+               *//* postValues.put("productos",valor.getDetalle());
                 postValues.put("precio", valor.getPrecio());
-                postValues.put("subtotal", valor.getSubtotal());*/
+                postValues.put("subtotal", valor.getSubtotal());*//*
                 childUpdates.put("/Registros/" + key+"/"+clave ,valor.getDetalle()+"  "+valor.getPrecio()+"  "+valor.getSubtotal() );
                 childUpdates.put("/usuario-registro/" + userId + "/" + key + "/" + clave, valor.getDetalle()+"  "+valor.getPrecio()+"  "+valor.getSubtotal());
 
 
                 Log.e("impresion Map", clave + "  ->  " + valor.toString());
                 mDatabase.updateChildren(childUpdates);
-            }
+            }*/
+
+            childUpdates.put("/Registros/" + key+"/" ,result );
+            childUpdates.put("/usuario-registro/" + userId + "/" + key + "/",result);
 
            /* Map<String, Object> postValues = new HashMap<>();
             postValues.put("usuario",usuario);
@@ -229,7 +236,58 @@ public class FinalProductoActivity extends BaseActivity {
 
 
     }
+    private JSONArray getResults()
+    {
 
+        //  String myPath = DB_PATH + DB_NAME;// Set path to your database
+
+//        String myTable = TABLE_NAME;//Set name of your table
+
+//or you can use `context.getDatabasePath("my_db_test.db")`
+
+
+        final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
+        final SQLiteDatabase db = admin.getReadableDatabase();
+        String []a={"descripcion","subtotal","precio"};
+        Cursor c =db.query("productos_imp", a, null, null, null, null, null);
+
+        JSONArray resultSet     = new JSONArray();
+        JSONObject rowObject = new JSONObject();
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+
+            int totalColumn = c.getColumnCount();
+
+
+            for( int i=0 ;  i< totalColumn ; i++ )
+            {
+                if( c.getColumnName(i) != null )
+                {
+                    try
+                    {
+                        if( c.getString(i) != null )
+                        {
+                            Log.d("TAG_NAME", c.getString(i) );
+                            rowObject.put(c.getColumnName(i) ,  c.getString(i) );
+                        }
+                        else
+                        {
+                            rowObject.put( c.getColumnName(i) ,  "" );
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        Log.d("TAG_NAME", e.getMessage()  );
+                    }
+                }
+            }
+            resultSet.put(rowObject);
+            c.moveToNext();
+        }
+        c.close();
+        Log.d("TAG_NAME",resultSet.toString() );
+        return  resultSet;
+    }
 
 
 

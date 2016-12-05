@@ -10,40 +10,27 @@ import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import leo.tusquites.R;
 
 /**
  * Created by Leo on 01/12/2016.
  */
-public class RegistosRecientesFragment extends Fragment {
+public class RegistosRecientesFragment extends RegistroListFragmento {
 
+    public RegistosRecientesFragment(){
 
-
-    @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragmento_todos, container, false);
-/*
-
-        // [START create_database_reference]
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END create_database_reference]
-
-        mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
-        mRecycler.setHasFixedSize(true);
-*/
-
-         /*Boton flotante  menu*/
-
-
-
-
-
-        return rootView;
     }
 
+    @Override
+    public Query getQuery(DatabaseReference databaseReference) {
+        Query recentPostsQuery = databaseReference.child("Registros")
+                ;
+        // [END recent_posts_query]
 
+        return recentPostsQuery;
+    }
 }
