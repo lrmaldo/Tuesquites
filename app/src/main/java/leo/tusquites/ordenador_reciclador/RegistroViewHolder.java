@@ -37,7 +37,7 @@ public class RegistroViewHolder extends RecyclerView.ViewHolder{
                 (long) registro.tiempo).toString());*/
         //numStarsView.setText(String.valueOf(post.starCount));
         Total.setText(registro.total);
-        detalle.setText("Ver detalle");
+        detalle.setText("Fecha: "+registro.fecha);
 
        // starView.setOnClickListener(starClickListener);
     }

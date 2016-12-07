@@ -1,5 +1,7 @@
 package leo.tusquites;
 
+import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,12 +9,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,21 +37,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import leo.tusquites.fragmentos.dialogAlert;
 import leo.tusquites.modelos.SQLiteHelper;
 import leo.tusquites.modelos.arrayproductosfinal;
 import leo.tusquites.modelos.tabla;
 import leo.tusquites.modelos.usuarios;
 
-public class FinalProductoActivity extends BaseActivity {
+public class FinalProductoActivity extends BaseActivity  implements DatePickerDialog.OnDateSetListener {
 
     ArrayList<arrayproductosfinal> lista = new ArrayList<>();
     Map<String, String> result = new TreeMap<String,String>();
     Gson gson = new Gson();
+    Toolbar toolbar;
+    CollapsingToolbarLayout collapser;
     private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +65,33 @@ public class FinalProductoActivity extends BaseActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+       toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) // Habilitar up button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        collapser =
+                (CollapsingToolbarLayout) findViewById(R.id.collapser);
+        Calendar ca = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("E d MMM  yyyy");
+        collapser.setTitle(format.format(ca.getTime()));
 
+        collapser.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        dialogAlert newFragment = new dialogAlert();
 
+                        /*FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        transaction.add(android.R.id.content, newFragment, "dialogAlert")
+                                .commit();*/
+                        newFragment.show(fragmentManager,"dialogAlert");
+                        Log.e("Error","toco el collapser");
+                    }
+                }
+        );
 
         Log.e("netHabilitada", Boolean.toString(isNetDisponible()));
         if (isNetDisponible()|| isOnlineNet()){
@@ -110,9 +146,16 @@ public class FinalProductoActivity extends BaseActivity {
         result.put("total","$"+total);
         ultima.add("$"+totalString);
         tab.agregarUltimaTabla(ultima);
+       /* View rootView =this.getWindow().getDecorView().findViewById(android.R.id.content);
+        iniciarFecha(rootView);*/
 
 
-
+    }
+    public void setDateView(int year, int monthOfYear, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(year, monthOfYear, dayOfMonth);
+        SimpleDateFormat format = new SimpleDateFormat("E d MMM yyyy");
+        collapser.setTitle(format.format(c.getTime()));
     }
 
 
@@ -152,10 +195,11 @@ public class FinalProductoActivity extends BaseActivity {
                                     // Write new post
                                     Long timestamp = System.currentTimeMillis();
 
-
+                                    result.put("uid",user.uid);
                                     result.put("usuario",user.nombre);
                                     result.put("tiempo",timestamp.toString());
                                     result.put("Json",getResults().toString());
+                                    result.put("fecha",collapser.getTitle().toString());
                                     escribirRegistro(userId,user.nombre,timestamp);
                                 }
 
@@ -303,7 +347,27 @@ public class FinalProductoActivity extends BaseActivity {
     }
 
 
+    private void iniciarFecha(View view) {
 
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("E MMM d yyyy");
+        collapser.setTitle(format.format(c.getTime()));
+
+        collapser.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        dialogAlert newFragment = new dialogAlert();
+
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        transaction.add(android.R.id.content, newFragment, "dialogAlert")
+                                .commit();
+                    }
+                }
+        );
+    }
 
 
 
@@ -371,6 +435,11 @@ public class FinalProductoActivity extends BaseActivity {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+setDateView(year,month,dayOfMonth);
     }
 }
 

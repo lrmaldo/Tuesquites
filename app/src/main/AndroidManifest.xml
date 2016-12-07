@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PrincipalActivity" />
+        <activity android:name=".PrincipalActivity"
+           />
 
         <service android:name=".fcm.IFirebaseInstanceIdService">
             <intent-filter>
@@ -49,10 +50,15 @@
             android:name=".InsertarProductoActivity"
             android:label="@string/title_activity_insertar_producto"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".FinalProductoActivity" />
-        <activity android:name=".Detalle_RegistroActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".FinalProductoActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity android:name=".Detalle_RegistroActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".PrincipalActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="leo.tusquites.PrincipalActivity" />
         </activity>
     </application>
 

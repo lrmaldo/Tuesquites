@@ -10,6 +10,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 
@@ -38,6 +39,7 @@ public abstract class RegistroListFragmento extends Fragment {
    /* private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;*/
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    TextView textvacio;
 
 
 
@@ -54,7 +56,7 @@ public abstract class RegistroListFragmento extends Fragment {
         // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END create_database_reference]
-
+        textvacio = (TextView) rootView.findViewById(R.id.recyclerview_data_empty);
         mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
 
@@ -72,6 +74,9 @@ public abstract class RegistroListFragmento extends Fragment {
         mManager.setReverseLayout(true);
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
+        if(mAdapter!=null){
+
+        }
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
@@ -117,6 +122,8 @@ public abstract class RegistroListFragmento extends Fragment {
                 });*/
             }
         };
+        mRecycler.setVisibility(View.VISIBLE);
+        textvacio.setText("");
         mRecycler.setAdapter(mAdapter);
     }
     @Override

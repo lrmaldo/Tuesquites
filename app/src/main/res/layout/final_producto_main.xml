@@ -1,137 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tabla"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="16dp"
-    android:stretchColumns="1"
-    tools:context="leo.tusquites.FinalProductoActivity">
-
-<TableRow android:background="@color/colorPrimaryDark">
-
-    <TextView
-        android:layout_column="0"
-        android:padding="3dip"
-        android:text="Producto"
-        android:textColor="@android:color/white" />
-    <TextView
-        android:layout_column="1"
-        android:padding="3dip"
-        android:text=" Precio unitario"
-        android:textColor="@android:color/white" />
-
-    <TextView
-        android:layout_column="2"
-        android:padding="3dip"
-        android:text="Subtotal"
-        android:textColor="@android:color/white" />
-</TableRow>
+    android:fitsSystemWindows="true">
 
 
-<!--
-<TableRow>
+    <!-- Objeto con Scroll -->
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:layout_column="0"
-        android:padding="3dip"
-        android:text="Jabón de manos x 1" />
-    <TextView
-        android:layout_column="1"
-        android:padding="3dip"
-        android:text="$2"
-        android:gravity="center"/>
-    <TextView
-        android:layout_column="2"
-        android:gravity="left"
-        android:padding="3dip"
-        android:text="$2"
-        android:layout_gravity="end"/>
-</TableRow>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="24dp">
 
-<TableRow>
+            <!-- Card Perfil -->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+               >
 
-    <TextView
-        android:layout_column="0"
-        android:padding="3dip"
-        android:text="Shampoo Monster x 1" />
+                <LinearLayout
+                    style="@style/Widget.CardContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="216dp">
+                    <!--Etiqueta Perfil -->
+                    <!-- <TextView
+                         android:id="@+id/titulo_detalle"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:text="Título"
+                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />-->
+                    <!--Texto de ejemplo-->
+                    <!--<TextView
+                        android:id="@+id/descripcion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />-->
 
-    <TextView
-        android:layout_column="2"
-        android:gravity="left"
-        android:padding="3dip"
-        android:text="$10" />
-</TableRow>
 
-<TableRow
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                </LinearLayout>
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/tabla"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:padding="16dp"
+                    android:stretchColumns="1">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:padding="3dip"
-        android:text="Pastas Duria x 2" />
+                    <TableRow android:background="@color/colorPrimaryDark"
+                        android:layout_width="0dp">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:gravity="left"
-        android:padding="3dip"
-        android:text="$18" />
-</TableRow>
+                        <TextView
+                            android:layout_column="0"
+                            android:padding="3dip"
+                            android:text="Producto"
+                            android:textColor="@android:color/white" />
+                        <TextView
+                            android:layout_column="1"
+                            android:padding="3dip"
+                            android:text=" Precio unitario"
+                            android:textColor="@android:color/white" />
 
-<TableRow
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                        <TextView
+                            android:layout_column="2"
+                            android:padding="3dip"
+                            android:text="Subtotal"
+                            android:textColor="@android:color/white" />
+                    </TableRow>
+                </TableLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:padding="3dip"
-        android:text="Detergente Limpiadin x 1" />
+            </android.support.v7.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:gravity="left"
-        android:padding="3dip"
-        android:text="$13,4" />
-</TableRow>
 
-<View
 
-    android:layout_height="2dip"
-    android:background="#FF909090" />
 
-<TableRow>
 
-    <TextView
-        android:layout_column="1"
-        android:padding="3dip"
-        android:text="Total"
-        android:textColor="#128675" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="2"
-        android:layout_gravity="left"
-        android:gravity="right"
-        android:padding="3dip"
-        android:text="$43,4" />
-</TableRow>
+    </android.support.v4.widget.NestedScrollView>
 
--->
+    <!-- App Bar -->
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-</TableLayout>
+        <!-- Collapser -->
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapser"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <!-- Imagen del detalle -->
+            <ImageView
+                android:id="@+id/image_paralax"
+                android:layout_width="match_parent"
+                android:layout_height="156dp"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
+
+            <!-- Toolbar -->
+            <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/CustomActionBar"
+
+
+                >
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <!-- FAB -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="@dimen/size_fab"
+        android:layout_height="@dimen/size_fab"
+        android:layout_margin="@dimen/fab_margin"
+
+        app:borderWidth="0dp"
+        app:elevation="@dimen/fab_elevation"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|right|end" />
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -99,10 +99,10 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapser"
             android:layout_width="match_parent"
-            android:layout_height="185dp"
+            android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="60dp"
+            app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 

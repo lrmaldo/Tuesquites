@@ -11,20 +11,24 @@ import java.util.Map;
  */
 @IgnoreExtraProperties
 public class modeloRegistro {
+    public String uid;
     public Object Json ;
     public Object tiempo;
      public String total;
      public String usuario;
+     public String fecha;
 
     public modeloRegistro(){
 
     }
 
-    public modeloRegistro(Object Json, Object tiempo, String total, String usuario) {
+    public modeloRegistro(String uid ,Object Json, Object tiempo, String total, String usuario, String fecha) {
+        this.uid=uid;
         this.Json = Json;
         this.tiempo = tiempo;
         this.total = total;
         this.usuario = usuario;
+        this.fecha=fecha;
     }
 
     @Exclude

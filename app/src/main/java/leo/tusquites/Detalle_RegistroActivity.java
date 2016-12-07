@@ -1,8 +1,13 @@
 package leo.tusquites;
 
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -18,6 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import leo.tusquites.modelos.modeloRegistro;
 import leo.tusquites.modelos.tabla;
@@ -29,11 +36,18 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
     private DatabaseReference mCommentsReference;
     private ValueEventListener mPostListener;
     private String mPostKey;
+    private ImageView cabecera;
+    CollapsingToolbarLayout collapser;
+    String uid_usuario ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle__registro);
+        setToolbar();// Añadir action bar
+        if (getSupportActionBar() != null) // Habilitar up button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Get post key from intent
         mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
@@ -46,6 +60,10 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
                 .child("Registros").child(mPostKey);
         Toast.makeText(Detalle_RegistroActivity.this, "llave"+mPostKey.toString(),
                 Toast.LENGTH_SHORT).show();
+
+        collapser =
+                (CollapsingToolbarLayout) findViewById(R.id.collapser);
+        cabecera = (ImageView) findViewById(R.id.image_paralax);
 
 
     }
@@ -60,21 +78,26 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 modeloRegistro registro = dataSnapshot.getValue(modeloRegistro.class);
+
+
                 // [START_EXCLUDE]
               /*  mAuthorView.setText(post.author);
                 mTitleView.setText(post.title);
                 mBodyView.setText(post.body);*/
                 // [END_EXCLUDE]
 
+
                 try {
+                    uid_usuario=registro.uid;
+                    collapser.setTitle(registro.fecha);
                     //JSONObject a = new JSONObject(registro.Json.toString());
                     JSONArray array = new JSONArray(registro.Json.toString());
                     for(int i=0; i<array.length(); i++){
                        JSONObject jsonObj  = array.getJSONObject(i);
                         ArrayList<String> elementos = new ArrayList<String>();
                         elementos.add(jsonObj.getString("descripcion"));
-                        elementos.add(jsonObj.getString("precio"));
-                        elementos.add(jsonObj.getString("subtotal"));
+                        elementos.add("$"+jsonObj.getString("precio"));
+                        elementos.add("$"+jsonObj.getString("subtotal"));
                         tab.agregarFilaTabla(elementos);
 
                        /* System.out.println(jsonObj.getString("descripcion"));
@@ -91,11 +114,24 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
 
                     ultima.add("$"+registro.total);
                     tab.agregarUltimaTabla(ultima);
+                    String tr = registro.total.replace("$","");
+                    float tot =Float.parseFloat(tr);
+                    if(tot<300){
+                        cabecera.setBackgroundColor(getResources().getColor(R.color.red));
+
+                    }else if(tot<800){
+                        cabecera.setBackgroundColor(getResources().getColor(R.color.medium));
+
+                    }else if(tot>800){
+                        cabecera.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    }
 
 
 
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e){
                     e.printStackTrace();
                 }
 
@@ -121,7 +157,36 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
         mAdapter = new CommentAdapter(this, mCommentsReference);
         mCommentsRecycler.setAdapter(mAdapter);*/
     }
-    public void convertir(){
+    private void setToolbar() {
+        // Añadir la Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detalle, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_delete:
+               // showSnackBar("Se abren los ajustes");
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/Registros/" + mPostKey.toString()+"/" ,null );
+                childUpdates.put("/usuario-registro/" + uid_usuario + "/" + mPostKey.toString() + "/",null);
+
+                FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
 
     }
+
 }
