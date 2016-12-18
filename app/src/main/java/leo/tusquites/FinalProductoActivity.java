@@ -198,7 +198,7 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
                                     // Write new post
                                     Long timestamp = System.currentTimeMillis();
 
-                                    result.put("uid",user.uid);
+                                    result.put("uid",userId);
                                     result.put("usuario",user.nombre);
                                     result.put("tiempo",timestamp.toString());
                                     result.put("Json",getResults().toString());
