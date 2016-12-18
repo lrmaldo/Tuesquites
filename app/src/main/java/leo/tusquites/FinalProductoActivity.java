@@ -3,6 +3,7 @@ package leo.tusquites;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -174,52 +176,125 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
         switch (id) {
 
             case R.id.menu_subir:
+                if (isNetDisponible()|| isOnlineNet()) {
+                    AlertDialog.Builder buider = new AlertDialog.Builder(this);
+                    buider.setTitle("Subir Registro").setIcon(R.drawable.ic_backup_dialog)
+                            .setMessage("¿Deseas subir este registro?")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    final String userId = getUid();
+                                    mDatabase.child("usuarios").child(userId).addListenerForSingleValueEvent(
+                                            new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    // Get user value
+                                                    usuarios user = dataSnapshot.getValue(usuarios.class);
+
+                                                    // [START_EXCLUDE]
+                                                    if (user == null) {
+                                                        // User is null, error out
+                                                        Log.e("final", "User " + userId + " is unexpectedly null");
+                                                        Toast.makeText(FinalProductoActivity.this,
+                                                                "Error: could not fetch user.",
+                                                                Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        // Write new post
+                                                        Long timestamp = System.currentTimeMillis();
+
+                                                        result.put("uid",userId);
+                                                        result.put("usuario",user.nombre);
+                                                        result.put("tiempo",timestamp.toString());
+                                                        result.put("Json",getResults().toString());
+                                                        result.put("fecha",collapser.getTitle().toString());
+                                                        escribirRegistro(userId,user.nombre,timestamp);
+                                                    }
+
+                                                    // Finish this Activity, back to the stream
+
+                                                    finish();
+                                                    // [END_EXCLUDE]
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                    Log.w("final", "getUser:onCancelled", databaseError.toException());
+                                                    // [START_EXCLUDE]
+                                                    //setEditingEnabled(true);
+                                                    // [END_EXCLUDE]
+                                                }
+                                            });
+                                }
+                            }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).create().show();
+
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Subir registro").setIcon(R.drawable.ic_error)
+                            .setMessage("Al parecer no hay  internet," +
+                                    " el registro se subirá cuando encuentre conectividad ")
+                            .setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    final String userId = getUid();
+                                    mDatabase.child("usuarios").child(userId).addListenerForSingleValueEvent(
+                                            new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    // Get user value
+                                                    usuarios user = dataSnapshot.getValue(usuarios.class);
+
+                                                    // [START_EXCLUDE]
+                                                    if (user == null) {
+                                                        // User is null, error out
+                                                        Log.e("final", "User " + userId + " is unexpectedly null");
+                                                        Toast.makeText(FinalProductoActivity.this,
+                                                                "Error: could not fetch user.",
+                                                                Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        // Write new post
+                                                        Long timestamp = System.currentTimeMillis();
+
+                                                        result.put("uid",userId);
+                                                        result.put("usuario",user.nombre);
+                                                        result.put("tiempo",timestamp.toString());
+                                                        result.put("Json",getResults().toString());
+                                                        result.put("fecha",collapser.getTitle().toString());
+                                                        escribirRegistro(userId,user.nombre,timestamp);
+                                                    }
+
+                                                    // Finish this Activity, back to the stream
+
+                                                    finish();
+                                                    // [END_EXCLUDE]
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+                                                    Log.w("final", "getUser:onCancelled", databaseError.toException());
+                                                    // [START_EXCLUDE]
+                                                    //setEditingEnabled(true);
+                                                    // [END_EXCLUDE]
+                                                }
+                                            });
+                                }
+                            }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).create().show();
 
 
 
+                }
 
                 // [START single_value_read]
-                final String userId = getUid();
-                mDatabase.child("usuarios").child(userId).addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                // Get user value
-                                usuarios user = dataSnapshot.getValue(usuarios.class);
 
-                                // [START_EXCLUDE]
-                                if (user == null) {
-                                    // User is null, error out
-                                    Log.e("final", "User " + userId + " is unexpectedly null");
-                                    Toast.makeText(FinalProductoActivity.this,
-                                            "Error: could not fetch user.",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // Write new post
-                                    Long timestamp = System.currentTimeMillis();
-
-                                    result.put("uid",userId);
-                                    result.put("usuario",user.nombre);
-                                    result.put("tiempo",timestamp.toString());
-                                    result.put("Json",getResults().toString());
-                                    result.put("fecha",collapser.getTitle().toString());
-                                    escribirRegistro(userId,user.nombre,timestamp);
-                                }
-
-                                // Finish this Activity, back to the stream
-
-                                finish();
-                                // [END_EXCLUDE]
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.w("final", "getUser:onCancelled", databaseError.toException());
-                                // [START_EXCLUDE]
-                                //setEditingEnabled(true);
-                                // [END_EXCLUDE]
-                            }
-                        });
 
 
 
