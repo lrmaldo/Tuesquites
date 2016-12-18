@@ -63,8 +63,9 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.final_producto_main);
 
+       /* FirebaseDatabase.getInstance().setPersistenceEnabled(true);*/
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        mDatabase.keepSynced(true);
        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) // Habilitar up button
@@ -173,6 +174,8 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
         switch (id) {
 
             case R.id.menu_subir:
+
+
 
 
                 // [START single_value_read]

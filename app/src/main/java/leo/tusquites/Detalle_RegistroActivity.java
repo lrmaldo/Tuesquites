@@ -1,6 +1,8 @@
 package leo.tusquites;
 
+import android.content.DialogInterface;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -58,6 +60,7 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
         // Initialize Database
         mPostReference = FirebaseDatabase.getInstance().getReference()
                 .child("Registros").child(mPostKey);
+        mPostReference.keepSynced(true);
         Toast.makeText(Detalle_RegistroActivity.this, "llave"+mPostKey.toString(),
                 Toast.LENGTH_SHORT).show();
 
@@ -142,7 +145,7 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
                 // Getting Post failed, log a message
                 Log.w("dettakeregistro", "loadPost:onCancelled", databaseError.toException());
                 // [START_EXCLUDE]
-                Toast.makeText(Detalle_RegistroActivity.this, "Failed to load post.",
+                Toast.makeText(Detalle_RegistroActivity.this, "Falló al ver registro.",
                         Toast.LENGTH_SHORT).show();
                 // [END_EXCLUDE]
             }
@@ -174,14 +177,29 @@ public class Detalle_RegistroActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_delete:
                // showSnackBar("Se abren los ajustes");
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put("/Registros/" + mPostKey.toString()+"/" ,null );
-                childUpdates.put("/usuario-registro/" + uid_usuario + "/" + mPostKey.toString() + "/",null);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Desea eliminar este registro?").setIcon(R.drawable.ic_error)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Map<String, Object> childUpdates = new HashMap<>();
+                        childUpdates.put("/Registros/" + mPostKey.toString()+"/" ,null );
+                        childUpdates.put("/usuario-registro/" + uid_usuario + "/" + mPostKey.toString() + "/",null);
 
-                FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
-                finish();
+                        FirebaseDatabase.getInstance().getReference().updateChildren(childUpdates);
+                        finish();
+
+                    }
+                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).create().show();
+
+
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }

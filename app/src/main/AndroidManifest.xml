@@ -50,8 +50,11 @@
             android:name=".InsertarProductoActivity"
             android:label="@string/title_activity_insertar_producto"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".FinalProductoActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+           >
+        </activity>
 
         <activity android:name=".Detalle_RegistroActivity"
             android:theme="@style/AppTheme.NoActionBar"

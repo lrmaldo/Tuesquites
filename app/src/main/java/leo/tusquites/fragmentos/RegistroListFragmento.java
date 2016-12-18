@@ -54,7 +54,11 @@ public abstract class RegistroListFragmento extends Fragment {
         View rootView = inflater.inflate(R.layout.fragmento_todos, container, false);
 
         // [START create_database_reference]
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.keepSynced(true);
+
+
         // [END create_database_reference]
         textvacio = (TextView) rootView.findViewById(R.id.recyclerview_data_empty);
         mRecycler = (RecyclerView) rootView.findViewById(R.id.messages_list);
@@ -79,7 +83,7 @@ public abstract class RegistroListFragmento extends Fragment {
         }
 
         // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
+        Query postsQuery = getQuery(FirebaseDatabase.getInstance().getReference());
         mAdapter = new FirebaseRecyclerAdapter<modeloRegistro, RegistroViewHolder>(modeloRegistro.class, R.layout.item_registro,
                 RegistroViewHolder.class, postsQuery) {
             @Override

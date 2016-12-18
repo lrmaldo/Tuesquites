@@ -172,8 +172,8 @@ titulo = (TextView) findViewById(R.id.textView);
 
         switch (id){
 
-             case R.id.menu_agregar:
-                 customDialog = new Dialog(this,R.style.Theme_Dialog_Translucent);
+             case R.id.menu_agregar: {
+              /*   customDialog = new Dialog(this,R.style.Theme_Dialog_Translucent);
                  //deshabilitamos el título por defecto
                  customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                  //obligamos al usuario a pulsar los botones para cerrarlo
@@ -189,106 +189,89 @@ titulo = (TextView) findViewById(R.id.textView);
                     Button es = (Button) customDialog.findViewById(R.id.entrar_boton);
                  es.setOnClickListener(new View.OnClickListener() {
                      @Override
-                     public void onClick(View v) {
+                     public void onClick(View v) {*/
 
 
-                         ArrayList<String> cadena = new ArrayList<String>();
-                         ArrayList<arrayproductosfinal> input = new ArrayList<arrayproductosfinal>();
-                        // comunicador co = new comunicador();
-                        // NumberPicker npNbJours;
-                         final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
-                         final SQLiteDatabase db = admin.getReadableDatabase();
-                         String []a={"nombre","precio","cantidad","cantidad_final"};
-                         Cursor c =db.query("productos", a, null, null, null, null, null);
+                 ArrayList<String> cadena = new ArrayList<String>();
+                 ArrayList<arrayproductosfinal> input = new ArrayList<arrayproductosfinal>();
+                 // comunicador co = new comunicador();
+                 // NumberPicker npNbJours;
+                 final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
+                 final SQLiteDatabase db = admin.getReadableDatabase();
+                 String[] a = {"nombre", "precio", "cantidad", "cantidad_final"};
+                 Cursor c = db.query("productos", a, null, null, null, null, null);
 
-                         //recursivo
-                          //  co.setObjeto(null);
+                 //recursivo
+                 //  co.setObjeto(null);
 
-                         final SQLiteHelper  admin1 = new SQLiteHelper(getApplication(),"esquites.db",null,1);
-                         final ContentValues registro = new ContentValues();
-                         final SQLiteDatabase bd = admin1.getWritableDatabase();
-                         // bd.delete("productos",null,null);
+                 final SQLiteHelper admin1 = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
+                 final ContentValues registro = new ContentValues();
+                 final SQLiteDatabase bd = admin1.getWritableDatabase();
+                 // bd.delete("productos",null,null);
 
-                         //listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
+                 //listaProducto.add(get(nombre_producto.getText().toString(), precio.getText().toString()));
 
-                         //for (int i = 0; i <= listView_final.getCount(); i++) {
-                           // int i =0;
-                           //  for(int i =0; i <= listView_final.getCount();i++) {
-                             while   (c.moveToNext()){
-
-
-
-                                 String nombre = c.getString(0);
-                                 String precio = c.getString(1);
-                                 int cantidad = Integer.valueOf(c.getString(2));
-                                 int cantidad_final =Integer.valueOf(c.getString(3));
-                                 String con = precio.replace("$", "");
-                                 float prec = Float.parseFloat(con);
-                                 float sub = (cantidad - cantidad_final) * prec;
-                                 Log.e("Salida BD", "salida " + cantidad + " - " + cantidad_final + " *" + prec + "  =" + (cantidad - cantidad_final) * prec);
+                 //for (int i = 0; i <= listView_final.getCount(); i++) {
+                 // int i =0;
+                 //  for(int i =0; i <= listView_final.getCount();i++) {
+                 while (c.moveToNext()) {
 
 
-                                 //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
-                                 String tex = "cantidad de " + cantidad_final;
-                                 cadena.add(tex);
-                                // input.add(new arrayproductosfinal(i,nombre + " x " + (cantidad - NbJours), sub));
-                                 //QrEtOccurence.add(output);}
-                                 registro.put("descripcion",nombre + " x "+(cantidad- cantidad_final));
-                                 registro.put("subtotal",sub);
-                                 registro.put("precio",precio);
-
-                                 bd.insert("productos_imp", null, registro);
-
-                                 Log.e("Insert producto_imp","salida "+c.getPosition()) ;
-                              // i++;
-                             }
-
-                        // }
-                         bd.close();
+                     String nombre = c.getString(0);
+                     String precio = c.getString(1);
+                     int cantidad = Integer.valueOf(c.getString(2));
+                     int cantidad_final = Integer.valueOf(c.getString(3));
+                     String con = precio.replace("$", "");
+                     float prec = Float.parseFloat(con);
+                     float sub = (cantidad - cantidad_final) * prec;
+                     Log.e("Salida BD", "salida " + cantidad + " - " + cantidad_final + " *" + prec + "  =" + (cantidad - cantidad_final) * prec);
 
 
+                     //String output = "Présenter durant "+NbJours+" jours le questionnaire "+NomDuQr;
+                     String tex = "cantidad de " + cantidad_final;
+                     cadena.add(tex);
+                     // input.add(new arrayproductosfinal(i,nombre + " x " + (cantidad - NbJours), sub));
+                     //QrEtOccurence.add(output);}
+                     registro.put("descripcion", nombre + " x " + (cantidad - cantidad_final));
+                     registro.put("subtotal", sub);
+                     registro.put("precio", precio);
+
+                     bd.insert("productos_imp", null, registro);
+
+                     Log.e("Insert producto_imp", "salida " + c.getPosition());
+                     // i++;
+                 }
+
+                 // }
+                 bd.close();
 
 
+                 //recursivo
+                 while (c.moveToNext()) {
+                     String nombre = c.getString(0);
+                     String precio = c.getString(1);
+                     String cantidad = c.getString(2);
+                     String con = precio.replace("$", "");
+                     Log.e("Salida BD", "salida " + con + " " + cantidad);
 
-                         //recursivo
-                         while(c.moveToNext()){
-                             String nombre = c.getString(0);
-                             String precio =c.getString(1);
-                             String cantidad=c.getString(2);
-                             String con = precio.replace("$","");
-                             Log.e("Salida BD","salida "+con+" "+cantidad) ;
-
-                         }
+                 }
 
 
 
 
-                    customDialog.dismiss();
+                   /* customDialog.dismiss();*/
 
-                         Intent intent = new Intent(InsertarProductoActivity.this, FinalProductoActivity.class);
-                         //intent.putExtra("miLista", input);
-                         startActivity(intent);
-                         finish();
-                     }
+                 Intent intent = new Intent(InsertarProductoActivity.this, FinalProductoActivity.class);
+                 //intent.putExtra("miLista", input);
+                 startActivity(intent);
+                 finish();
+               /*      }
                  });
 
-customDialog.show();
+customDialog.show();*/
 
 
-
-
-//                for (int i=0; i<listaProducto.size(); i++){
-
-
-//                    if(listaProducto.get(i).isSelected()){
-            //                      listaProducto.add(get(listaProducto.get(i).getTitulo(), listaProducto.get(i).getDescripcion(), listaProducto.get(i).getId_imagen()));
-            //                    listaProducto.get(i).setSelected(false);
-            //              }
-
-            //        }
-
-            //      adapter.notifyDataSetChanged();
-
+             }
               break;
 
             case R.id.menu_borrar:

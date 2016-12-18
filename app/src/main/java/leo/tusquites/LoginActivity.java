@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity implements LoginFragment.Callback {
 
@@ -19,6 +20,8 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Ca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setupTranslucentStatusBar();
+        /*uso del disco sin conexion*/
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.login_container);
