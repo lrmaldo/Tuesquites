@@ -21,21 +21,27 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Ca
         setContentView(R.layout.activity_login);
         setupTranslucentStatusBar();
         /*uso del disco sin conexion*/
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+     try {
+         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.login_container);
-        if (loginFragment == null) {
-            loginFragment = LoginFragment.newInstance();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.login_container, loginFragment)
-                    .commit();
+         LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager()
+                 .findFragmentById(R.id.login_container);
+         if (loginFragment == null) {
+             loginFragment = LoginFragment.newInstance();
+             getSupportFragmentManager().beginTransaction()
+                     .add(R.id.login_container, loginFragment)
+                     .commit();
+         }
+
+         LoginInteractor loginInteractor = new LoginInteractor(
+                 getApplicationContext(), FirebaseAuth.getInstance());
+         new LoginPresenter(loginFragment, loginInteractor);
+
+
+     }catch (Exception e){
+         e.printStackTrace();
+     }
         }
-
-        LoginInteractor loginInteractor = new LoginInteractor(
-                getApplicationContext(), FirebaseAuth.getInstance());
-        new LoginPresenter(loginFragment, loginInteractor);
-    }
 
     private void setupTranslucentStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {

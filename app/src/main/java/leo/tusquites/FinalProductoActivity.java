@@ -70,8 +70,8 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
         mDatabase.keepSynced(true);
        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) // Habilitar up button
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       /* if (getSupportActionBar() != null) // Habilitar up button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
         collapser =
                 (CollapsingToolbarLayout) findViewById(R.id.collapser);
@@ -293,7 +293,7 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
 
                 }
 
-                // [START single_value_read]
+
 
 
 
@@ -314,32 +314,14 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
 
 
     private void escribirRegistro(String userId, String usuario, Long time) {
-        // Create new post at /user-posts/$userid/$postid and at
-        // /posts/$postid simultaneously
+
 
         try {
             String key = mDatabase.child("Registros").push().getKey();
 
 
             Map<String, Object> childUpdates = new HashMap<>();
-            //Post post = new Post(userId, username, title, body);
 
-
-
-            /*for (Map.Entry<String, arrayproductosfinal> jugador : result.entrySet()) {
-                String clave = jugador.getKey();
-                arrayproductosfinal valor = jugador.getValue();
-
-               *//* postValues.put("productos",valor.getDetalle());
-                postValues.put("precio", valor.getPrecio());
-                postValues.put("subtotal", valor.getSubtotal());*//*
-                childUpdates.put("/Registros/" + key+"/"+clave ,valor.getDetalle()+"  "+valor.getPrecio()+"  "+valor.getSubtotal() );
-                childUpdates.put("/usuario-registro/" + userId + "/" + key + "/" + clave, valor.getDetalle()+"  "+valor.getPrecio()+"  "+valor.getSubtotal());
-
-
-                Log.e("impresion Map", clave + "  ->  " + valor.toString());
-                mDatabase.updateChildren(childUpdates);
-            }*/
 
             childUpdates.put("/Registros/" + key+"/" ,result );
             childUpdates.put("/usuario-registro/" + userId + "/" + key + "/",result);
@@ -362,25 +344,16 @@ public class FinalProductoActivity extends BaseActivity  implements DatePickerDi
     private JSONArray getResults()
     {
 
-        //  String myPath = DB_PATH + DB_NAME;// Set path to your database
-
-//        String myTable = TABLE_NAME;//Set name of your table
-
-//or you can use `context.getDatabasePath("my_db_test.db")`
+       /*Convierte la base de datos a JSON*/
 
 
         final SQLiteHelper admin = new SQLiteHelper(getApplication(), "esquites.db", null, 1);
         final SQLiteDatabase db = admin.getReadableDatabase();
-        /*String []a={"descripcion","subtotal","precio"};
-        Cursor c =db.query("productos_imp", a, null, null, null, null, null);
-*/
-        //String myPath = DB_PATH + DB_NAME;// Set path to your database
+
 
         String myTable = "productos_imp";//Set name of your table
 
-//or you can use `context.getDatabasePath("my_db_test.db")`
 
-        //SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
         String searchQuery = "SELECT  * FROM " + myTable;
         Cursor cursor = db.rawQuery(searchQuery, null );
